@@ -2,7 +2,7 @@ package menu.actions;
 import java.util.Scanner;
 import menu.MenuAction;
 
-public class GetNumberOfStudentsTallerThanMenuAction implements MenuAction{
+public class GetNumberOfStudentsOfAge implements MenuAction{
     // Sadly there's no point in using the student class oon the models package
     // as it does not require the age of 5 students that are being held in memory. 
     // This is why we're using a int array instead of a collection of alumnos or students.
