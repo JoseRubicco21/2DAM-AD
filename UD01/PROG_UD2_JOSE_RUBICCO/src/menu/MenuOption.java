@@ -1,5 +1,4 @@
 package menu;
-import menu.MenuAction;
 import menu.actions.UnimplementedMenuAction;
 
 public class MenuOption {
@@ -16,7 +15,7 @@ public class MenuOption {
         this.description = description;
         this.action = action;
     }
-    
+
     public String getDescription() {
         return description;
     }
