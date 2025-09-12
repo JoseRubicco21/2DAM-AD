@@ -29,7 +29,7 @@ public class GetNumberOfStudentsTallerThanMenuAction implements MenuAction{
                 numberOfAdults += 1;
             }
         }
-
+        // print out stuff and the close the resource we open with the creation of the command.
         System.out.println("Number of adults: " + numberOfAdults);
         sc.close();
     }
