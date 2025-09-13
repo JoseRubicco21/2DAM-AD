@@ -14,7 +14,8 @@ public class ExitMenuAction implements MenuAction{
 
     @Override
     public MenuResult execute(Scanner sc) {
-        throw new UnsupportedOperationException("Unimplemented method 'excecute'");
+        System.out.println("Saliendo del menu...");
+        return MenuResult.EXIT;
     }
     
 }

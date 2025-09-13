@@ -4,6 +4,7 @@ import menu.MenuOption;
 import menu.actions.AugmentSalaryMenuAction;
 import menu.actions.ExitMenuAction;
 import menu.actions.GetNumberOfStudentsOfAge;
+import menu.actions.GetNumberOfStudentsTallerThan;
 import menu.actions.UnimplementedMenuAction;
 
 public class MainMenu extends Menu {
@@ -12,8 +13,8 @@ public class MainMenu extends Menu {
     public MainMenu(){
         this
         .addOption(new MenuOption("Aumento de salario", new AugmentSalaryMenuAction()))
-        .addOption(new MenuOption("Estudiantes mas altos que 1.75m", new GetNumberOfStudentsOfAge()))
-        .addOption(new MenuOption("Estudiantes mayores de 18 años", new UnimplementedMenuAction()))
+        .addOption(new MenuOption("Estudiantes mayores de 18 años", new GetNumberOfStudentsOfAge()))
+        .addOption(new MenuOption("Estudiantes mas altos que 1.75m", new GetNumberOfStudentsTallerThan()))
         .addOption(new MenuOption("Salir", new ExitMenuAction()));
     }
 
