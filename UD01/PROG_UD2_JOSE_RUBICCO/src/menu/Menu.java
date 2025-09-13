@@ -15,17 +15,17 @@ public class Menu {
     }
 
     // Displays all the options of the menu 
-    private void display(){
+    public void display(){
         // Over each option display their description and add an index for the menu.        
     }
 
     // Builder pattern stuff.
-    private Menu addOption(MenuOption option){
+    public Menu addOption(MenuOption option){
         this.options.add(option);
         return this;
     }
 
-    private Menu removeOption(int index){
+    public Menu removeOption(int index){
         this.options.remove(index);
         return this;
     }
