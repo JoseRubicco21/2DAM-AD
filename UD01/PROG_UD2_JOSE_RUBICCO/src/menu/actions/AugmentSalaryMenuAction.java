@@ -17,6 +17,8 @@ public class AugmentSalaryMenuAction implements MenuAction{
         } else {
             System.out.printf("El salario con el aumento del 12% incorporado es: %d", salary*0.12+salary);
         }
+
+        sc.close();
     }
     
 
