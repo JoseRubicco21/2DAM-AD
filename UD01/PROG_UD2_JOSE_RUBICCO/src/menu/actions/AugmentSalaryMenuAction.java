@@ -1,23 +1,23 @@
 package menu.actions;
+import java.util.Scanner;
 import menu.MenuAction;
-import models.Worker;
+
 
 public class AugmentSalaryMenuAction implements MenuAction{
-    private Worker worker;
+
+    private Scanner sc = new Scanner(System.in);
     
-    public AugmentSalaryMenuAction(Worker worker){
-        this.worker = worker;
-    };
 
     @Override
     public void execute() {
-        if(this.worker.getSalary() < 1000){
-            this.worker.setSalary(this.worker.getSalary()*0.15+this.worker.getSalary());
+        
+        double salary = sc.nextDouble();
+        if(salary < 1000){
+            System.out.printf("El salario con el aumento 15% incorporado es: %d", salary*0.15+salary);
         } else {
-            this.worker.setSalary(this.worker.getSalary()*0.12+this.worker.getSalary());
+            System.out.printf("El salario con el aumento del 12% incorporado es: %d", salary*0.12+salary);
         }
-
-        System.out.println(this.worker.getSalary());
     }
+    
 
 }
