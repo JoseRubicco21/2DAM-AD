@@ -6,12 +6,12 @@ public class MenuOption {
     private MenuAction action;
 
     // We default to Unimplemented menu action if there's no action defined when building.
-    MenuOption(String description){
+    public MenuOption(String description){
         this.description = description;
         this.action = new UnimplementedMenuAction();
     }
 
-    MenuOption(String description, MenuAction action){
+    public MenuOption(String description, MenuAction action){
         this.description = description;
         this.action = action;
     }

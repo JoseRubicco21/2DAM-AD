@@ -6,20 +6,23 @@ import menu.MenuOption;
 // This is a partial implementation of a Menu using Command + Builder pattern and something in between.
 // The comments are also in English as it is and should be standard practice. Please notify if needed otherwise.
 
-public class Menu {
+public abstract class Menu {
 
-    List<MenuOption> options;
+    protected List<MenuOption> options;
 
     public Menu(){
         this.options = new ArrayList<MenuOption>();
     }
 
-    // Displays all the options of the menu 
-    public void display(){
-        // Over each option display their description and add an index for the menu.        
-    }
+    // Displays all the options of the menu, we let it off to the implementations.
+    // This lets us define display for each menu, letting us have I.- 1.- and other 
+    // types of numberings. 
+    
+    public abstract void display();
 
-    // Builder pattern stuff.
+    // Every menu should behave as a list of things that can grow or shrink, as so these two
+    // methods for adding and removing Options are on the abstract class.
+
     public Menu addOption(MenuOption option){
         this.options.add(option);
         return this;
