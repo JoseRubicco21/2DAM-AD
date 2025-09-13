@@ -24,4 +24,13 @@ public class MenuOption {
         this.description = description;
     }
 
+    public MenuAction getAction() {
+        return action;
+    }
+
+    public void setAction(MenuAction action) {
+        this.action = action;
+    }
+
+    
 }

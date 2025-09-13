@@ -9,9 +9,11 @@ import menu.MenuOption;
 public abstract class Menu {
 
     protected List<MenuOption> options;
+    protected MenuState state;
 
     public Menu(){
         this.options = new ArrayList<MenuOption>();
+        this.state = MenuState.ACTIVE;
     }
 
     // Displays all the options of the menu, we let it off to the implementations.
@@ -33,4 +35,21 @@ public abstract class Menu {
         return this;
     }
 
+    public MenuState getState() {
+        return state;
+    }
+
+    public void setState(MenuState state) {
+        this.state = state;
+    }
+
+    public boolean isActive(){
+        return state == MenuState.ACTIVE;
+    }
+
+    public List<MenuOption> getOptions() {
+        return options;
+    }
+
+    
 }
