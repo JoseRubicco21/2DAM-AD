@@ -1,5 +1,5 @@
 package characters.mage;
-
+import java.util.Scanner;
 import characters.Personaje;
 
 public class Mago extends Personaje {
@@ -43,5 +43,17 @@ public class Mago extends Personaje {
         this.hechizoFavorito = hechizoFavorito;
     }
 
-    
-}
+    public Mago createMago(Scanner sc){
+        Mago m = new Mago();
+        System.out.println("Ingrese el nombre del mago:");
+        m.setNombre(sc.nextLine());
+        System.out.println("Ingrese la vida del mago:");
+        m.setVida(Integer.parseInt(sc.nextLine()));
+        System.out.println("Ingrese el nivel de magia del mago:");
+        m.setNivelMagia(Integer.parseInt(sc.nextLine()));
+        System.out.println("Ingrese el hechizo favorito del mago (ADIVINACION, NECROMANCIA, PIROMANCIA, INVOCACION):");
+        String hechizo = sc.nextLine();
+        m.setHechizoFavorito(Hechizo.valueOf(hechizo));
+        return m;    
+        }
+    }
