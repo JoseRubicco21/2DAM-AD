@@ -18,8 +18,9 @@ public class Mago extends Personaje {
     }
 
     @Override
-    public void atacar() {
-        System.out.println(this.getNombre() + " lanza un hechizo!");
+    public void atacar(Personaje personaje) {
+        System.out.println(this.getNombre() + " lanza un hechizo de " + this.hechizoFavorito + " causando " + this.nivelMagia + " de daño!");
+        personaje.takeDamage(this.nivelMagia);
     }
 
     public void aprenderHechizo(Hechizo nuevoHechizo) {

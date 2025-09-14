@@ -29,7 +29,7 @@ public abstract class Personaje {
         this.vida = (vida < 0) ? 0 : vida;
     }
 
-    public abstract void atacar();
+    public abstract void atacar(Personaje objetivo);
 
     public void takeDamage(int damage){
         this.setVida(this.getVida() - damage);
