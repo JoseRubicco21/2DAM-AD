@@ -59,7 +59,7 @@ public class App {
         simularBatalla(bosque, mago1, monstruo2);
 
         System.out.println("Personajes ordenados por vida:");
-        personajes.sort(new OrdernarPorVida());
+        personajes.sort(new OrdernarPorVida().reversed());
         personajes.forEach(p -> System.out.println(p.getNombre() + " - Vida: " + p.getVida()));
     }
 }
