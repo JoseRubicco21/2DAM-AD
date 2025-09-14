@@ -1,4 +1,4 @@
-package characters;
+package characters.mage;
 
 public enum Hechizo {
     ADIVINACION,

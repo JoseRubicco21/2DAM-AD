@@ -1,4 +1,6 @@
-package characters;
+package characters.mage;
+
+import characters.Personaje;
 
 public class Mago extends Personaje {
 
