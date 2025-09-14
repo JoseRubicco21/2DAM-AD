@@ -2,8 +2,8 @@ package characters;
 
 public abstract class Personaje {
     
-    String nombre;
-    int vida;
+    protected String nombre;
+    protected int vida;
 
     public Personaje(String nombre, int vida) {
         this.nombre = nombre;
