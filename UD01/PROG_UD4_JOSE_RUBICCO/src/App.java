@@ -6,7 +6,6 @@ import characters.monster.TipoDeMonstruo;
 import characters.OrdernarPorVida;
 import stages.Bosque;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
