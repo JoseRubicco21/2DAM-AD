@@ -1,7 +1,12 @@
 package menu;
+import java.util.Scanner;
 
 public interface MenuAction {
  
-    public void execute();
+    default MenuResult execute(){
+        return execute(null);
+    };
+
+    public MenuResult execute(Scanner sc);
      
 }

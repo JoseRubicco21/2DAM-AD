@@ -1,19 +1,18 @@
 package menu.actions;
 import java.util.Scanner;
 import menu.MenuAction;
+import menu.MenuResult;
 
 public class GetNumberOfStudentsOfAge implements MenuAction{
     // Sadly there's no point in using the student class oon the models package
     // as it does not require the age of 5 students that are being held in memory. 
     // This is why we're using a int array instead of a collection of alumnos or students.
-
-    private Scanner sc = new Scanner(System.in);
     private int[] studentsAge = new int[5];
     
     // I'm going to assume the input is always going to be an integer. I'm not going to validate this at seems
     // more over the top than what i'm already doing.
     @Override
-    public void execute() {
+    public MenuResult execute(Scanner sc) {
         // Store everything up in an array as we get the data from the user.
         for (int i = 0; i < 5; i++) {
             System.out.printf("Introduce la edad del alumno %d:%n", i+1);           
@@ -31,7 +30,8 @@ public class GetNumberOfStudentsOfAge implements MenuAction{
         }
         // print out stuff and the close the resource we open with the creation of the command.
         System.out.println("Number of adults: " + numberOfAdults);
-        sc.close();
+
+        return MenuResult.CONTINUE;
     }
     
 

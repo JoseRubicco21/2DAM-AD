@@ -1,36 +1,40 @@
 package menu.actions;
+
 import java.util.Scanner;
 
 import menu.MenuAction;
+import menu.MenuResult;
 
 public class GetNumberOfStudentsTallerThan implements MenuAction {
 
-    // We're going to be using the same type of stuff we do on the numerOfStudentsTallerThan.
-    private Scanner sc = new Scanner(System.in);
-    private float[] studentsHeight = new float[5];
-    private int whileFlag = 0;
-
+    // We store them as Strings so we can split by both "," and "." and then do the calculations
+    // on integers so that 1.75 -> 175 or anything upper than 175 is added to the counter of students
+    // taller than the amount.
+    private int[] studentsHeight = new int[5];
+    private int studentsTallerThan = 0;
+    private int iterator = 0;
+    
     @Override
-    public void execute() {
-        // We get the data the same way as we did with the for but with a while loop.
-        while(whileFlag < 5){
-            System.out.printf("Introduce la edad del alumno %d:%n", whileFlag+1);           
-            studentsHeight[whileFlag] = sc.nextInt();
-        }
-        
-        // We reset so we can re-use the flag.
-        whileFlag = 0;
-        int studentsTallerThan = 0;
-        
-        while(whileFlag < 5){
-            if(studentsHeight[whileFlag] >= 1.75){
-                studentsTallerThan += 1;
-            }
+    public MenuResult execute(Scanner sc) {
+        sc.nextLine(); // Clear the buffer.clear
+
+        while (iterator < 5) {
+            System.out.printf("Altura para el estudiante %d:%n", iterator);
+            String input = sc.nextLine();
+            String[] parts = input.split("\\.|,");
+            int height = Integer.parseInt(String.join("", parts));
+            studentsHeight[iterator] = height;
+            iterator += 1;
         }
 
-        // We display the whole stuff and close the resource we opened with the command.
-        System.out.printf("Cantidad de alumnos con altura mayor o igual a 1.75m: %d", studentsTallerThan);
-        sc.close(); 
+        iterator = 0;
+        while (iterator < studentsHeight.length) {
+            if(studentsHeight[iterator] > 175) studentsTallerThan +=1;
+            iterator += 1;
+        }
+
+        System.out.printf("Cantidad de estudiantes mas altos que 1.75m: %d%n", studentsTallerThan);
+        return MenuResult.CONTINUE;
     }
     
 }
