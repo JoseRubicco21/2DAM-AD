@@ -1,8 +1,12 @@
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.file.NotDirectoryException;
 
 import ejercicio_1.Filtrar;
 import ejercicio_1.FiltrarNombre;
+import ejercicio_2.ClasificaDirectorios;
+import ejercicio_3.FicheroManejoBinario;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -39,6 +43,20 @@ public class App {
         catch (IOException e){
             System.out.println(e.getMessage());
         }
+    
+    
+        ClasificaDirectorios classifier = new ClasificaDirectorios();
+
+        try {
+           classifier.segunExtension("./src/unsorted");
+        } catch (NotDirectoryException e){
+            System.out.println(e.getMessage());
+        } catch (FileNotFoundException e){
+            System.out.println(e.getMessage());
+        }
+    
+        FicheroManejoBinario manejadorBinario = new FicheroManejoBinario();
+        manejadorBinario.main();
     }
 }
 
