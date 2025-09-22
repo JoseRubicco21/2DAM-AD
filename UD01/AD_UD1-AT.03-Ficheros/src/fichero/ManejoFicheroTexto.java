@@ -6,6 +6,8 @@ import java.util.Scanner;
 import menu.Menu;
 import menu.MenuResult;
 import menu.MenuState;
+import menu.exceptions.InvalidInputException;
+import menu.exceptions.InvalidOptionException;
 import menu.implementations.MainMenu;
 
 public class ManejoFicheroTexto {
@@ -21,13 +23,19 @@ public class ManejoFicheroTexto {
         menu.setState(MenuState.ACTIVE);
         while (menu.isActive()) {
             menu.display();
-            int option = Integer.parseInt(sc.nextLine());
-            MenuResult result = menu.getOptions()
-            .get(option)
-            .getAction()
-            .execute(sc, file);
+            try {
+                int option = Integer.parseInt(sc.nextLine());
+                MenuResult result = menu.getOptions()
+                .get(option)
+                .getAction()
+                .execute(sc, file);
+                if(result == MenuResult.EXIT) menu.setState(MenuState.INACTIVE);
+            } catch (InvalidInputException e) {
+                System.out.println(e.getMessage());
+            } catch (InvalidOptionException e){
+                System.out.println(e.getMessage());
+            }
         
-            if(result == MenuResult.EXIT) menu.setState(MenuState.INACTIVE);
         }
         
         sc.close();
