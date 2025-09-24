@@ -24,7 +24,7 @@ public class ManejoFicheroTexto {
         while (menu.isActive()) {
             menu.display();
             try {
-                int option = Integer.parseInt(sc.nextLine());
+                int option = menu.validateInput(sc.nextLine());
                 MenuResult result = menu.getOptions()
                 .get(option)
                 .getAction()

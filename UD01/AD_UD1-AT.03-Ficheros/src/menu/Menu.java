@@ -55,10 +55,10 @@ public abstract class Menu {
 
     // I can technically return void? but it's not kinda good? It doesn't really feel good to code it like that even if
     // I'm not doing anything with the return value? 
-    public boolean validateInput(String str) throws InvalidOptionException, InvalidInputException {
-        if(!str.matches("d")) throw new InvalidInputException();
+    public int validateInput(String str) throws InvalidOptionException, InvalidInputException {
+        if(!str.matches("\\b\\d+\\b")) throw new InvalidInputException();
         if(Integer.parseInt(str) > options.size() || Integer.parseInt(str) < 0) throw new InvalidOptionException();
-        return true;
+        return Integer.parseInt(str);
     }
     
 }
