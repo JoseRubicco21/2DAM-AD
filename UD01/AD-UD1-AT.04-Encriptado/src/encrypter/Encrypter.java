@@ -7,20 +7,23 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileAlreadyExistsException;
 
 public class Encrypter {
 
     private File codecFile;
     private Map<String, String> encryptedMap;
     private Map<String, String> decryptedMap;
+    private FileBuilder fileBuilder;
 
-
-    public Encrypter(File codecFile) {
+    public Encrypter(File codecFile, FileBuilder fileBuilder) {
         this.codecFile = codecFile;
+        this.fileBuilder = fileBuilder;
         initMaps();
     }
 
@@ -61,7 +64,7 @@ public class Encrypter {
 
         } catch (IOException e){
             System.out.println(e.getMessage());
-        }
+        } 
     }
 
     private Map<String, String> mapCodecs(String[] sourceArray, String[] targetArray){
@@ -75,14 +78,11 @@ public class Encrypter {
     }
 
     public String valorEncriptado(char value, Map<String, String> encodeMap){
-        return encodeMap.getOrDefault(String.valueOf(value), "");
+        return encodeMap.getOrDefault(String.valueOf(value), value);
     }   
 
-    // This is the same implementation as the ValorEncriptado function.
-    // As the implementation is using symmetric encription. So technically
-    // It is uneccesary.
     public String valorDesencriptado(char value, Map<String, String> decodeMap){
-        return decodeMap.getOrDefault(String.valueOf(value),"");
+        return this.valorEncriptado(value, decodeMap);
     }
 
     public void encriptar(File file){
@@ -128,6 +128,18 @@ public class Encrypter {
         } catch (IOException e){
             System.out.println(e.getMessage());
         }
+    }
+
+    private void read(){
+
+    }
+
+    private void write(){
+
+    }
+
+    private void generateStorage() throws FileAlreadyExistsException, FileNotFoundException, FileAlreadyExistsException{
+    
     }
 }
 
