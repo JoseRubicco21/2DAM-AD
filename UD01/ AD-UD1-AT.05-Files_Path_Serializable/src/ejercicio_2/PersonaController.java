@@ -1,5 +1,6 @@
 package ejercicio_2;
 
+import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -55,6 +56,8 @@ public class PersonaController {
             System.err.println(e.getMessage());
         } catch (IOException e){
             System.err.println(e.getMessage());
+        } catch ( EOFException e) {
+            System.out.println(e.getMessage());
         }
         return personas;
     }
