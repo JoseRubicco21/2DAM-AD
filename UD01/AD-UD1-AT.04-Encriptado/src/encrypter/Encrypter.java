@@ -12,18 +12,17 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.FileAlreadyExistsException;
 
 public class Encrypter {
 
     private File codecFile;
     private Map<String, String> encryptedMap;
     private Map<String, String> decryptedMap;
-    private FileBuilder fileBuilder;
 
-    public Encrypter(File codecFile, FileBuilder fileBuilder) {
+
+    public Encrypter(File codecFile  ) {
         this.codecFile = codecFile;
-        this.fileBuilder = fileBuilder;
+  
         initMaps();
     }
 
@@ -78,7 +77,7 @@ public class Encrypter {
     }
 
     public String valorEncriptado(char value, Map<String, String> encodeMap){
-        return encodeMap.getOrDefault(String.valueOf(value), value);
+        return encodeMap.getOrDefault(String.valueOf(value), Character.toString(value));
     }   
 
     public String valorDesencriptado(char value, Map<String, String> decodeMap){
@@ -93,7 +92,7 @@ public class Encrypter {
                   .mapToObj(c -> valorEncriptado((char)c, decryptedMap))
                   .collect(Collectors.joining());
             String filename = file.getName().split("\\.")[0];
-            File destination = new File("./src/datos/encrypt/"+filename+"_codificado");
+            File destination = new File("./src/datos/encrypt/"+filename+"_codificado.txt");
             
             try(BufferedWriter bw = new BufferedWriter(new FileWriter(destination))){
                 bw.write(res);
@@ -112,12 +111,12 @@ public class Encrypter {
             
         String input = new String(byteChars, StandardCharsets.UTF_8);
         String res = input.chars()
-                    .mapToObj(c -> valorEncriptado((char)c, decryptedMap))
+                    .mapToObj(c -> valorEncriptado((char)c, encryptedMap))
                     .collect(Collectors.joining());
 
 
             String filename = file.getName().split("\\.")[0];
-            File destination = new File("./src/datos/decrypt/"+ filename +"_decodificado");
+            File destination = new File("./src/datos/decrypt/"+ filename +"_decodificado.txt");
             
             try(BufferedWriter bw = new BufferedWriter(new FileWriter(destination))){
                 bw.write(res);
@@ -130,16 +129,5 @@ public class Encrypter {
         }
     }
 
-    private void read(){
-
-    }
-
-    private void write(){
-
-    }
-
-    private void generateStorage() throws FileAlreadyExistsException, FileNotFoundException, FileAlreadyExistsException{
-    
-    }
 }
 
