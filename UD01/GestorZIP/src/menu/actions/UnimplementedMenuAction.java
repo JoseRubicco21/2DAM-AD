@@ -1,8 +1,5 @@
 package menu.actions;
 
-import java.io.File;
-import java.util.Scanner;
-
 import menu.components.MenuAction;
 import menu.state.MenuResult;
 
