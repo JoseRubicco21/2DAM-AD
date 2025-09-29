@@ -1,4 +1,4 @@
-package menu;
+package menu.components;
 import menu.actions.UnimplementedMenuAction;
 
 // A class that defines the options of a menu, with their display text and command.

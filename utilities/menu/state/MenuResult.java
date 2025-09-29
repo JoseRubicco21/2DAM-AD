@@ -1,4 +1,4 @@
-package menu;
+package menu.state;
 
 // Menu Result controls the result of the action executed by the menu. Not the menu state.
 // This way we can send to submenus like a "Debug" submenu if something Unexpected happen.
