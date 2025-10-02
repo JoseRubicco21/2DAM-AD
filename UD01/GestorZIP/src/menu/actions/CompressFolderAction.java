@@ -17,7 +17,7 @@ public class CompressFolderAction extends MenuAction {
     }
     
     public MenuResult execute(Scanner sc){
-      
+       
         return MenuResult.CONTINUE;
     }
 }

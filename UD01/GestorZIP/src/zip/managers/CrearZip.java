@@ -6,9 +6,8 @@ import java.io.FileNotFoundException;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
-import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import java.io.FileOutputStream;
@@ -20,7 +19,6 @@ import zip.exceptions.isDirectoryException;
 public class CrearZip{
 
     private File zipFile;
-    private int fileCounter;
     private ArrayList<File> filesToZip;
     
     public CrearZip(){
@@ -29,7 +27,7 @@ public class CrearZip{
 
     public CrearZip(File zipFile){
         this.zipFile = zipFile;
-        this.fileCounter = 0;
+        this.filesToZip = new ArrayList<File>();
     }
 
 
@@ -45,7 +43,7 @@ public class CrearZip{
                 try(FileInputStream fis = new FileInputStream(filesToZip.get(i).getName())){
                    this.writeFileToZip(fis, zipOut);
                 } catch (IOException e){
-                    System.out.println(e.getMessage());
+                   System.out.println(e.getMessage());
                 }                
             }
         
@@ -57,12 +55,12 @@ public class CrearZip{
 
 
     private ArrayList<ZipEntry> createZipEntries(){
-        return (ArrayList<ZipEntry>) this.filesToZip.stream().map((file) -> new ZipEntry(file.getName())).toList();
+        return this.filesToZip.stream().map((file) -> new ZipEntry(file.getName())).collect(Collectors.toCollection(ArrayList::new));
     }
 
     private void putEntries(ZipOutputStream zipOut, ArrayList<ZipEntry> zipEntries) throws IOException{
         for(int i = 0; i < zipEntries.size(); i++){
-            zipOut.putNextEntry(zipEntries.get(0));
+            zipOut.putNextEntry(zipEntries.get(i));
         }
     }    
  
@@ -77,6 +75,7 @@ public class CrearZip{
     public void askForFiles(int fileCounter, Scanner input){
         for(int i = 0; i < fileCounter; i++){
             try{
+                System.out.println("Nombre del archivo a añadir");
                 this.filesToZip.add(this.askForFile(input.nextLine()));
             } catch(Exception e){
                 System.err.println(e.getMessage());
