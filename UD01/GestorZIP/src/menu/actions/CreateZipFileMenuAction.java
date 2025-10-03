@@ -19,19 +19,32 @@ public class CreateZipFileMenuAction extends MenuAction{
     @Override    
     public MenuResult execute(){
     
-        System.out.println("Nombre a guardar el fihcero ZIP que se creará:");
-        String zipFilename = this.sc.nextLine()+".zip";
+        String zipFilename = this.getZipFileName(sc);
+        File zipFile = this.pathToFile(zipFilename, "ficheros");
+        int fileCounter = this.getFileNumbers(sc);
         
-        Path filePath = Paths.get("ficheros", zipFilename);
-        File zipFile = filePath.toFile();
         CrearZip cZip = new CrearZip(zipFile);
-
-        System.out.println("¿Cuántos ficheros se quieren añadir?");
-        int fileCounter = Integer.parseInt(this.sc.nextLine());
-
         cZip.askForFiles(fileCounter, this.sc);
         cZip.comprimir();
 
         return MenuResult.CONTINUE;
+    }
+
+    private  String getZipFileName(Scanner sc){
+        System.out.println("Nombre a guardar el fihcero ZIP que se creará:");
+        String result = this.sc.nextLine()+".zip";
+        return result;
+    }
+
+    private File pathToFile(String fileName, String... directoryNames){
+        Path filePath = Paths.get(fileName, directoryNames);
+        File result = filePath.toFile();
+        return result;
+    }
+
+    private int getFileNumbers(Scanner sc){
+         System.out.println("¿Cuántos ficheros se quieren añadir?");
+         int result = Integer.parseInt(this.sc.nextLine());
+         return result;
     }
 }

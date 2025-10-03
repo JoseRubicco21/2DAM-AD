@@ -16,31 +16,24 @@ import java.io.IOException;
 import zip.exceptions.isDirectoryException;
 
 
-public class CrearZip{
+public class CrearZip extends ZipManager{
 
-    private File zipFile;
-    private ArrayList<File> filesToZip;
-    
-    public CrearZip(){
-
-    }
 
     public CrearZip(File zipFile){
-        this.zipFile = zipFile;
-        this.filesToZip = new ArrayList<File>();
+        super(zipFile);
     }
-
 
     public void comprimir(){
         try(
-            FileOutputStream fos = new FileOutputStream(zipFile.getName());
+            FileOutputStream fos = new FileOutputStream(zipFile.getPath());
             ZipOutputStream zipOut = new ZipOutputStream(fos);)
         {
-            this.putEntries(zipOut, this.createZipEntries());
+            
+            ArrayList<ZipEntry> entries = createZipEntries();
                 
-            for(int i = 0; i < filesToZip.size(); i++){ 
-                    
-                try(FileInputStream fis = new FileInputStream(filesToZip.get(i).getName())){
+            for(int i = 0; i < filesToOperate.size(); i++){ 
+                zipOut.putNextEntry(entries.get(i));
+                try(FileInputStream fis = new FileInputStream(filesToOperate.get(i).getPath())){
                    this.writeFileToZip(fis, zipOut);
                 } catch (IOException e){
                    System.out.println(e.getMessage());
@@ -48,21 +41,26 @@ public class CrearZip{
             }
         
         } catch (IOException e){
-            e.getMessage();
+            System.out.println(e.getMessage());
         }
     }
 
 
 
     private ArrayList<ZipEntry> createZipEntries(){
-        return this.filesToZip.stream().map((file) -> new ZipEntry(file.getName())).collect(Collectors.toCollection(ArrayList::new));
+        return this.filesToOperate.stream().map((file) -> new ZipEntry(file.getName())).collect(Collectors.toCollection(ArrayList::new));
     }
 
-    private void putEntries(ZipOutputStream zipOut, ArrayList<ZipEntry> zipEntries) throws IOException{
+
+    // It is not possible to do it this way api does not support this kind of operation. At 
+    // least not without using ZipInputStream and go nextEntry but that seems wild.
+    /* 
+     private void putEntries(ZipOutputStream zipOut, ArrayList<ZipEntry> zipEntries) throws IOException{
         for(int i = 0; i < zipEntries.size(); i++){
             zipOut.putNextEntry(zipEntries.get(i));
         }
     }    
+    */
  
     private void writeFileToZip(FileInputStream fis, ZipOutputStream zipOut) throws IOException{
         byte[] buffer = new byte[1024];
@@ -76,7 +74,7 @@ public class CrearZip{
         for(int i = 0; i < fileCounter; i++){
             try{
                 System.out.println("Nombre del archivo a añadir");
-                this.filesToZip.add(this.askForFile(input.nextLine()));
+                this.filesToOperate.add(this.askForFile(input.nextLine()));
             } catch(Exception e){
                 System.err.println(e.getMessage());
             }

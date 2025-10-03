@@ -2,7 +2,6 @@ package menu.implementations;
 import java.util.Scanner;
 
 import menu.Menu;
-import menu.actions.CompressFolderAction;
 import menu.actions.CreateZipFileMenuAction;
 import menu.actions.ExitMenuAction;
 import menu.components.MenuOption;
