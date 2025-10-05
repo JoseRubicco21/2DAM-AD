@@ -30,10 +30,13 @@ public abstract class Menu {
     // This lets us define display for each menu, letting us have I.- 1.- and other 
     // types of numberings. 
     
-    public abstract void display();
+    public abstract Menu display();
 
-    public void choose(Scanner sc) throws InvalidInputException, InvalidOptionException{
+
+    public Menu choose(Scanner sc) throws InvalidInputException, InvalidOptionException{
         this.setCurrentOption(this.validateInput(sc.nextLine()));
+
+        return this;
     }
 
     public int getCurrentOption() {
@@ -44,13 +47,15 @@ public abstract class Menu {
         this.currentOption = currentOption;
     }
 
-    public void execute(){
+    public Menu execute(){
         this.setLastResult(
             this.getOptions()
             .get(this.currentOption)
             .getAction()
             .execute()
-        );        
+        );   
+        
+        return this;
     }
     // Every menu should behave as a list of things that can grow or shrink, as so these two
     // methods for adding and removing Options are on the abstract class.

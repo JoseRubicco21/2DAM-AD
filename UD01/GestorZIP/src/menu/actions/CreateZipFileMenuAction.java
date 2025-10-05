@@ -20,7 +20,7 @@ public class CreateZipFileMenuAction extends MenuAction{
     public MenuResult execute(){
     
         String zipFilename = this.getZipFileName(sc);
-        File zipFile = this.pathToFile(zipFilename, "ficheros");
+        File zipFile = this.pathToFile("ficheros",  zipFilename);
         int fileCounter = this.getFileNumbers(sc);
         
         CrearZip cZip = new CrearZip(zipFile);

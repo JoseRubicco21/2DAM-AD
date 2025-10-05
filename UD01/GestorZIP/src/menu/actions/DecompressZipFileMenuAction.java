@@ -1,6 +1,7 @@
 package menu.actions;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOError;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -9,6 +10,7 @@ import java.util.Scanner;
 
 import menu.components.MenuAction;
 import menu.state.MenuResult;
+import zip.managers.ExtraerZip;
 
 public class DecompressZipFileMenuAction extends MenuAction{
 
@@ -20,13 +22,29 @@ public class DecompressZipFileMenuAction extends MenuAction{
 
     @Override
     public MenuResult execute() {
-        System.out.println("Introduzca el nombre del directorio a descomprimir");
-        String zipFolderName = sc.nextLine();
+        
+        try{
+            File zipFile = this.getZipFile();
+            ExtraerZip eZip = new ExtraerZip(zipFile);
+            eZip.descomprimir();
 
-        Path directoryPath = Paths.get("ficheros", zipFolderName);
-        File directory = directoryPath.toFile();
+        } catch (FileNotFoundException e){
+            System.out.println(e.getMessage());
+        }
 
         return MenuResult.CONTINUE;
     }
     
+
+    private File getZipFile() throws FileNotFoundException{
+        System.out.println("Introduzca el nombre del directorio a descomprimir");
+        String zipFileName = sc.nextLine();
+
+        Path zipFilePath = Paths.get("ficheros", zipFileName);
+        File zipFile = zipFilePath.toFile();
+
+        if(!zipFile.exists()) throw new FileNotFoundException("El fichero Zip a descomprimir no existe.");
+
+        return zipFile;
+    }
 }

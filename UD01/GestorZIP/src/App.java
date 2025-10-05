@@ -18,9 +18,9 @@ public class App {
         // Menu flow
         while (menu.isActive()) {
             try{
-                menu.display();
-                menu.choose(sc);
-                menu.execute();
+                menu.display()
+                    .choose(sc)
+                    .execute();
             if(menu.getLastResult() == MenuResult.EXIT) menu.setState(MenuState.INACTIVE);
             } catch(InvalidInputException e){
                 System.err.println(e.getMessage());
