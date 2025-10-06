@@ -54,9 +54,9 @@ public class PersonaController {
             }       
         } catch ( ClassNotFoundException e){
             System.err.println(e.getMessage());
-        } catch (IOException e){
-            System.err.println(e.getMessage());
         } catch ( EOFException e) {
+            System.err.println(e.getMessage());
+        } catch (IOException e){
             System.out.println(e.getMessage());
         }
         return personas;
