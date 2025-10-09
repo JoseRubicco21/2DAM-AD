@@ -41,22 +41,24 @@ public class Clasificacion {
     }
 
     public static Clasificacion loadClasificacion(){
-
         Clasificacion loadedClasificacion = new Clasificacion();
-        File dataFile =  Paths.get("datos", "clasificacion.dat").toFile();
+        File dataFile = Paths.get("datos", "clasificacion.dat").toFile();
         
         try(FileInputStream fis = new FileInputStream(dataFile);
-        ObjectInputStream objIn = new ObjectInputStream(fis)){
+            ObjectInputStream objIn = new ObjectInputStream(fis)){
             
-            Equipo eq;
-            while ((eq = (Equipo) objIn.readObject()) !=null) {
-                loadedClasificacion.addEquipo(eq);
+            try {
+                while (true) {
+                    Equipo eq = (Equipo) objIn.readObject();
+                    loadedClasificacion.addEquipo(eq);
+                }
+            } catch (EOFException ex) {
+                // End of file reached - this is expected
+                System.out.println("Carga finalizada");
             }
-
+            
             return loadedClasificacion;
-        } catch (EOFException ex){
-            System.out.println("Carga finalizada");
-        }  catch(IOException | ClassNotFoundException ex) {
+        } catch(IOException | ClassNotFoundException ex) {
             System.out.println(ex.getMessage());  
         }
         return loadedClasificacion;
@@ -65,6 +67,10 @@ public class Clasificacion {
     public static void saveClasificacion(List<Equipo> eq) throws IOException {
         File dataFile = Paths.get("datos", "clasificacion.dat").toFile();
 
+        if(!dataFile.exists()) {
+            dataFile.getParentFile().mkdirs();
+            dataFile.createNewFile();
+        }
 
         try (FileOutputStream fos = new FileOutputStream(dataFile, false);
                 ObjectOutputStream objOut = new ObjectOutputStream(fos)) {
@@ -90,5 +96,16 @@ public class Clasificacion {
 
     public void setEquipos(List<Equipo> equipos) {
         this.equipos = equipos;
+    }
+
+    @Override
+    public String toString(){
+        return String.format("""
+        .%s.    
+        | %32s | %16s | %16s | %16s | %16s | %16s |
+        *%s*
+        %s
+        """, 
+        "-".repeat(16*5+32+3*6),"Nombre", "Victorias", "Derrotas", "Puntos a favor", "Puntos en contra", "Puntos", "-".repeat(16*5+32+3*6), equipos);
     }
 }

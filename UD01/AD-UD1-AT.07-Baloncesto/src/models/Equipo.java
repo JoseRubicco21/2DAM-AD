@@ -126,6 +126,17 @@ public class Equipo implements Comparable<Equipo>, Serializable {
         return true;
     }
 
+    @Override
     
+    public String toString(){
+
+        return String.format("| %32s | %16d | %16d | %16d | %16d | %16d |%n",
+        this.getNombre(),
+        this.getVictorias(),
+        this.getDerrotas(),
+        this.getPuntosAFavor(),
+        this.getPuntosEnContra(),
+        this.getPuntos());
+    };
 
 }

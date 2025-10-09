@@ -14,6 +14,7 @@ public class CreateEquipoMenuAction extends MenuAction {
 
     public CreateEquipoMenuAction(Scanner sc, Clasificacion clasificacion){
         this.sc = sc;
+        this.clasificacion = clasificacion;
     }
 
     @Override
