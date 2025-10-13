@@ -8,4 +8,9 @@ public class Proveedor {
         this.nombre = "n/a";
         this.telefono = "n/a";
     }
+
+    @Override
+    public String toString() {
+        return "Proveedor [nombre=" + nombre + ", telefono=" + telefono + "]";
+    }
 }

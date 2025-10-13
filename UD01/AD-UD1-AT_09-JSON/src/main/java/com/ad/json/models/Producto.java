@@ -1,5 +1,7 @@
 package com.ad.json.models;
 
+import java.util.Arrays;
+
 public class Producto {
     private String nombre;
     private double precio;
@@ -93,6 +95,13 @@ public class Producto {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+    }
+
+    @Override
+    public String toString() {
+        return "Producto [nombre=" + nombre + ", precio=" + precio + ", disponible=" + disponible + ", categorias="
+                + Arrays.toString(categorias) + ", stock=" + stock + ", descripcion=" + descripcion + ", proveedor="
+                + proveedor + "]";
     }
 
     
