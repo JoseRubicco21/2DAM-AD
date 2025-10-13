@@ -51,7 +51,7 @@ public class GestorProductos {
         displayProductos(productos);
     }
 
-    private static ArrayList<Producto> readProductos() {
+    public static ArrayList<Producto> readProductos() {
         ArrayList<Producto> productos = new ArrayList<>();
         try (FileReader fr = new FileReader(getProductsJson())) {
             Gson gson = new Gson();
