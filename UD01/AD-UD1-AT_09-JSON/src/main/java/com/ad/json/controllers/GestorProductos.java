@@ -9,6 +9,7 @@ import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.ad.json.models.Producto;
 import com.google.gson.Gson;
@@ -17,7 +18,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class GestorProductos {
 
-    public static void saveToJson(ArrayList<Producto> productos) {
+    public static void saveToJson(List<Producto> productos) {
         try (FileWriter fw = new FileWriter(manageCreationOfJsonFile())) {
             GsonBuilder gBuilder = new GsonBuilder().setPrettyPrinting();
             Gson gson = gBuilder.create();
@@ -47,12 +48,12 @@ public class GestorProductos {
     }
 
     public static void readAndDisplayJson() {
-        ArrayList<Producto> productos = readProductos();
+        List<Producto> productos = readProductos();
         displayProductos(productos);
     }
 
-    public static ArrayList<Producto> readProductos() {
-        ArrayList<Producto> productos = new ArrayList<>();
+    public static List<Producto> readProductos() {
+        List<Producto> productos = new ArrayList<>();
         try (FileReader fr = new FileReader(getProductsJson())) {
             Gson gson = new Gson();
             Type prodListType = new TypeToken<ArrayList<Producto>>() {
@@ -67,7 +68,7 @@ public class GestorProductos {
         return productos;
     }
 
-    public static void displayProductos(ArrayList<Producto> prods) {
+    public static void displayProductos(List<Producto> prods) {
         prods.forEach(System.out::println);
     }
 }

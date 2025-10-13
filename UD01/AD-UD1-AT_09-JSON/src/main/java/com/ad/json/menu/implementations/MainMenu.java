@@ -1,5 +1,6 @@
 package com.ad.json.menu.implementations;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import com.ad.json.menu.Menu;
@@ -10,7 +11,7 @@ import com.ad.json.menu.actions.*;
 public class MainMenu extends Menu {
 
 
-    public MainMenu(Scanner sc, ArrayList<Producto> prods){
+    public MainMenu(Scanner sc, List<Producto> prods){
         this.addOption(new MenuOption("Cargar productos", new GetProuctsAction(prods)));
         this.addOption(new MenuOption("Guardar productos", new SaveToJsonAction(prods)));
         this.addOption(new MenuOption("Leer y mostrar desde fichero", new ReadAndDisplayAction()));
