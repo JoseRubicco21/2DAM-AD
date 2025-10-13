@@ -14,6 +14,7 @@ import java.util.List;
 import com.ad.json.models.Producto;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 public class GestorProductos {
@@ -22,7 +23,8 @@ public class GestorProductos {
         try (FileWriter fw = new FileWriter(manageCreationOfJsonFile())) {
             GsonBuilder gBuilder = new GsonBuilder().setPrettyPrinting();
             Gson gson = gBuilder.create();
-            gson.toJsonTree(productos);
+            JsonElement elem = gson.toJsonTree(productos);
+            gson.toJson(elem, fw);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -33,7 +35,7 @@ public class GestorProductos {
         File jsonFile = getProductsJson();
 
         if (!jsonFile.exists()) {
-            jsonFile.mkdirs();
+            jsonFile.getParentFile().mkdirs();
             jsonFile.createNewFile();
         }
 
@@ -41,7 +43,7 @@ public class GestorProductos {
     }
 
     private static File getProductsJson() {
-        Path jsonFilePath = Paths.get("resources", "productos.json");
+        Path jsonFilePath = Paths.get("src", "main","resources", "productos.json");
         File jsonFile = jsonFilePath.toFile();
 
         return jsonFile;
@@ -56,8 +58,9 @@ public class GestorProductos {
         List<Producto> productos = new ArrayList<>();
         try (FileReader fr = new FileReader(getProductsJson())) {
             Gson gson = new Gson();
-            Type prodListType = new TypeToken<ArrayList<Producto>>() {
-            }.getType();
+            // "Black magic" -- It creates a token type of type T defined by the user, initializes a base instance to get type w/ reflection
+            // This only works if we know what type of value we wrote in the json.
+            Type prodListType = new TypeToken<ArrayList<Producto>>() {}.getType();
             productos = gson.fromJson(fr, prodListType);
             return productos;
         } catch (FileNotFoundException e) {

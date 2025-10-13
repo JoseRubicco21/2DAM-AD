@@ -1,0 +1,33 @@
+[
+  {
+    "nombre": "Disco duro",
+    "precio": 30.0,
+    "disponible": true,
+    "categorias": [
+      "hardware",
+      "almacenamiento"
+    ],
+    "stock": 30,
+    "descripcion": "Disco duro de 512GB",
+    "proveedor": {
+      "nombre": "Western digital",
+      "telefono": "111-333-4442"
+    }
+  },
+  {
+    "nombre": "Cable usb",
+    "precio": 12.0,
+    "disponible": false,
+    "categorias": [
+      "n/a",
+      "n/a",
+      "n/a"
+    ],
+    "stock": 0,
+    "descripcion": "Sin descripción",
+    "proveedor": {
+      "nombre": "n/a",
+      "telefono": "n/a"
+    }
+  }
+]

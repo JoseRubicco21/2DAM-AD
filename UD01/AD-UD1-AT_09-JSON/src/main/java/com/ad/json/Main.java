@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import com.ad.json.menu.implementations.MainMenu;
+import com.ad.json.menu.state.MenuState;
 import com.ad.json.models.Producto;
 import com.ad.json.models.Proveedor;
 import com.ad.json.menu.Menu;
@@ -29,6 +30,7 @@ public class Main {
 
         Scanner sc = new Scanner(System.in);
         Menu menu = new MainMenu(sc, prods);
+        menu.setState(MenuState.ACTIVE);
 
         while (menu.isActive()) {
             try{
