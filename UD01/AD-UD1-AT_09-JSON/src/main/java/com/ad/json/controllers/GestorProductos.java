@@ -62,7 +62,6 @@ public class GestorProductos {
             // This only works if we know what type of value we wrote in the json.
             Type prodListType = new TypeToken<ArrayList<Producto>>() {}.getType();
             productos = gson.fromJson(fr, prodListType);
-            return productos;
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
         } catch (IOException e) {
