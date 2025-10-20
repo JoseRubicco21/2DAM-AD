@@ -1,11 +1,11 @@
-package menu;
+package com.ud2_at1.services.menu;
 import java.util.ArrayList;
 import java.util.List;
 
-import menu.components.MenuOption;
-import menu.exceptions.InvalidInputException;
-import menu.exceptions.InvalidOptionException;
-import menu.state.MenuState;
+import com.ud2_at1.services.menu.components.MenuOption;
+import com.ud2_at1.services.menu.exceptions.InvalidInputException;
+import com.ud2_at1.services.menu.exceptions.InvalidOptionException;
+import com.ud2_at1.services.menu.state.MenuState;
 
 // This is a partial implementation of a Menu using Command + Builder pattern and something in between.
 // The comments are also in English as it is and should be standard practice. Please notify if needed otherwise.
@@ -57,11 +57,8 @@ public abstract class Menu {
         return options;
     }
 
-    
-    public abstract int validateInput();
 
-    @Override
-    public int validateInput(String str) throws InvalidOptionException, InvalidInputException {
+    protected int validateInput(String str) throws InvalidOptionException, InvalidInputException {
         if(!str.matches("\\b\\d+\\b")) throw new InvalidInputException();
         int option = Integer.parseInt(str);
         if(option > options.size() || option < 0) throw new InvalidOptionException();
