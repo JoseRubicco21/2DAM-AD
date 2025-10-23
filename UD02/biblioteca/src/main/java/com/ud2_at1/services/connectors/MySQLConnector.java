@@ -22,7 +22,8 @@ public class MySQLConnector {
 
     public MySQLConnector() throws MySQLConnectorException {
         try {
-            ConfigLoader config = ConfigLoader.getInstance();
+            // Initialize ConfigLoader
+            ConfigLoader.getInstance();
             this.connection = DriverManager.getConnection(ConfigLoader.get("mysql.url"), ConfigLoader.get("mysql.user"),
                     ConfigLoader.get("mysql.password"));
         } catch (SQLException e) {
