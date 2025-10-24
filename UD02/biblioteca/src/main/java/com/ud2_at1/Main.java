@@ -1,6 +1,5 @@
 package com.ud2_at1;
 
-import com.ud2_at1.models.generic.Database;
 import com.ud2_at1.services.connectors.MySQLConnector;
 import com.ud2_at1.services.connectors.exceptions.MySQLConnectorException;
 import com.ud2_at1.services.loaders.ConfigLoader;
@@ -23,6 +22,5 @@ public class Main {
     public static void main(String[] args) {
         // Initialize the database with a test connection.
         init();
-
     }
 }

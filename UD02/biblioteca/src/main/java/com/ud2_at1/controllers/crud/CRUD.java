@@ -4,8 +4,7 @@ import com.ud2_at1.controllers.crud.exceptions.CRUDUnimplementedCreateMethodExce
 import com.ud2_at1.controllers.crud.exceptions.CRUDUnimplementedDeleteMethodException;
 import com.ud2_at1.controllers.crud.exceptions.CRUDUnimplementedReadMethodException;
 import com.ud2_at1.controllers.crud.exceptions.CRUDUnimplementedUpdateMethodException;
-import com.ud2_at1.services.logger.Logger;
-import com.ud2_at1.services.logger.enums.LogLevel;
+
 
 public interface CRUD {
     public default boolean create(Operation operation) throws CRUDUnimplementedCreateMethodException{
