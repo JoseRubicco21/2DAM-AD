@@ -1,10 +1,12 @@
 package  com.ud2_at1.services.menu.exceptions;
 
-public class InvalidInputException extends Exception {
+import com.ud2_at1.services.exceptions.TemplateException;
 
-    @Override
-    public String getMessage() {
-        return "The format of the input is not adequate. Please enter an Integer.";
+public class InvalidInputException extends TemplateException {
+
+    public InvalidInputException(String msg){
+        super(msg);
+        setExceptionCode("CODE MENU01");
     }
     
     

@@ -12,17 +12,18 @@ public class GestorLibrosMenu extends Menu {
 
 
     @Override
-    public void display() {
+    public Menu display() {
        for (int i = 0; i < options.size(); i++) {
             System.out.printf("[%d]: %s%n", i, this.options.get(i).getDescription());
        }
+       return this;
     }
 
     @Override
     public int validateInput(String str) throws InvalidOptionException, InvalidInputException {
-        if(!str.matches("\\b\\d+\\b")) throw new InvalidInputException();
+        if(!str.matches("\\b\\d+\\b")) throw new InvalidInputException("El dato no corresponde al formato estipulado.");
         int option = Integer.parseInt(str);
-        if(option > options.size() || option < 0) throw new InvalidOptionException();
+        if(option > options.size() || option < 0) throw new InvalidOptionException("Opción invalida del menu.");
         return option;
     }
 }

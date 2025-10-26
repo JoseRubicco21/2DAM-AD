@@ -1,6 +1,8 @@
 package com.ud2_at1.controllers;
 
 
+import javax.xml.crypto.Data;
+
 import com.ud2_at1.controllers.crud.CRUD;
 import com.ud2_at1.controllers.crud.Operation;
 import com.ud2_at1.models.generic.Database;
@@ -40,7 +42,6 @@ public class MySQLGeneralController implements CRUD {
         Logger.info("Launching READ operation");
         return operation.operate();
     }
-
 
     
 }

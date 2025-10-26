@@ -62,7 +62,7 @@ El programa debe de tener las siguientes funcionalidades:
 >[!danger] GSON y maven.
 Utiliza la libreria `GSON` con `maven`. Cargar y Guardar datos del mundo deben tener como origen y destino un fichero `JSON`.
 
-Asegurase de que haya una buena división de paquetes y que los modificadores de aceso sean los adecuados.
+Asegurase de que haya una buena división de paquetes y que los modificadores de acceso sean los adecuados.
 
 ### Recomendaciones
 
