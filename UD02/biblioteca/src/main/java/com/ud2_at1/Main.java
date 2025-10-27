@@ -2,8 +2,9 @@ package com.ud2_at1;
 
 import java.util.Scanner;
 
+import com.ud2_at1.controllers.MySQLGeneralController;
+import com.ud2_at1.controllers.exceptions.GeneralControllerException;
 import com.ud2_at1.services.connectors.MySQLConnector;
-import com.ud2_at1.services.connectors.exceptions.MySQLConnectorException;
 import com.ud2_at1.services.loaders.ConfigLoader;
 import com.ud2_at1.services.logger.Logger;
 import com.ud2_at1.services.menu.Menu;
@@ -18,6 +19,11 @@ public class Main {
     private static void init(){
         ConfigLoader.getInstance();
         Logger.info("Initialized configuration");
+        try {
+            MySQLGeneralController.init();
+        } catch (GeneralControllerException e) {
+            e.displayExceptionMessage();
+        }
     }
     public static void main(String[] args) {
         // Initialize the database with a test connection.

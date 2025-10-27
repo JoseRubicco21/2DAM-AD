@@ -8,9 +8,6 @@ import com.ud2_at1.services.menu.exceptions.InvalidOptionException;
 import com.ud2_at1.services.menu.state.MenuResult;
 import com.ud2_at1.services.menu.state.MenuState;
 
-// This is a partial implementation of a Menu using Command + Builder pattern and something in between.
-// The comments are also in English as it is and should be standard practice. Please notify if needed otherwise.
-import java.util.List;
 import java.util.Scanner;
 
 

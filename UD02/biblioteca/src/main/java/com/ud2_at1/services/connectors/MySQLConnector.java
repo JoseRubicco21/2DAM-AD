@@ -44,6 +44,16 @@ public class MySQLConnector {
 
     }
 
+    public static Connection getConnectionAsRoot() throws MySQLConnectorException{
+        try{
+            Connection connection = DriverManager.getConnection(ConfigLoader.get("mysql.url"), "root", "root");
+            return connection;
+        } catch (SQLException e){
+            throw new MySQLConnectorException(e.getMessage());
+        }
+    }
+
+
     public Connection getConnection() {
         return connection;
     }
