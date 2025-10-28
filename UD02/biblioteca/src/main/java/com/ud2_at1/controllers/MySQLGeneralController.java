@@ -28,6 +28,15 @@ public class MySQLGeneralController implements CRUD {
 
     private Database db;
 
+    public MySQLGeneralController(){
+
+    }
+
+    public MySQLGeneralController(Database db){
+        this.db = db;
+    }
+
+    
     @Override
     public boolean create(Operation operation) {
         Logger.info("Launching CREATE operation");
@@ -89,13 +98,11 @@ public class MySQLGeneralController implements CRUD {
         return result;
     }
  
-    private static PreparedStatement createDatabaseStatement(Connection connection){
+    private  PreparedStatement createDatabaseStatement(Connection connection){
         PreparedStatement result;
         try {
-            PreparedStatement pss = connection.prepareStatement("CREATE DATABASE IF NOT EXISTS ? CHARACTER SET ? COLLATE ?;");
-            pss.setString(1, ConfigLoader.get("mysql.dbname"));
-            pss.setString(2, ConfigLoader.get("mysql.charset"));
-            pss.setString(3, ConfigLoader.get("mysql.charset.collation"));
+            String query = String.format("CREATE DATABASE IF NOT EXISTS %s CHARSET %s COLLATION %s;", this.db.getName(), this.db.getCharset(), this.db.getCollationType());
+            PreparedStatement pss = connection.prepareStatement(query);
             Logger.success("Se ha creado la base de datos correctamente");
             result = pss;
         } catch (SQLException e){
@@ -185,10 +192,10 @@ public class MySQLGeneralController implements CRUD {
         return result;
     }
 
-    public static boolean init() throws GeneralControllerException{
+    public boolean init() throws GeneralControllerException{
         boolean result;
         try {
-            result = prepareStatementTemplateMethod(MySQLGeneralController::createDatabaseStatement);
+            result = prepareStatementTemplateMethod(this::createDatabaseStatement);
             if (result == false) throw new GeneralControllerException("Error creating the database");
             result = prepareStatementTemplateMethod(MySQLGeneralController::createUserStatement);
             if (result == false) throw new GeneralControllerException("Error creating the user");
@@ -201,6 +208,14 @@ public class MySQLGeneralController implements CRUD {
             e.displayExceptionMessage();
         }
         return result;
+    }
+
+    public Database getDb() {
+        return db;
+    }
+
+    public void setDb(Database db) {
+        this.db = db;
     }
 
 

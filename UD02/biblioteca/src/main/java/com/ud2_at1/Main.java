@@ -1,9 +1,11 @@
 package com.ud2_at1;
 
+import java.sql.DatabaseMetaData;
 import java.util.Scanner;
 
 import com.ud2_at1.controllers.MySQLGeneralController;
 import com.ud2_at1.controllers.exceptions.GeneralControllerException;
+import com.ud2_at1.models.generic.Database;
 import com.ud2_at1.services.connectors.MySQLConnector;
 import com.ud2_at1.services.loaders.ConfigLoader;
 import com.ud2_at1.services.logger.Logger;
@@ -16,11 +18,19 @@ import com.ud2_at1.services.menu.state.MenuState;
 public class Main {
 
     MySQLConnector connection;
-    private static void init(){
+    MySQLGeneralController generalController;
+
+    private void init(){
         ConfigLoader.getInstance();
+        Database db = new Database(
+            ConfigLoader.get("mysql.dbname "), 
+            ConfigLoader.get("mysql.charset"),
+            ConfigLoader.get("mysql.charset.collation"));
+            generalController = new MySQLGeneralController(db);
+
         Logger.info("Initialized configuration");
         try {
-            MySQLGeneralController.init();
+            generalController.init();
         } catch (GeneralControllerException e) {
             e.displayExceptionMessage();
         }
@@ -32,7 +42,7 @@ public class Main {
         Menu mainMenu = new MainMenu(sc);
         mainMenu.setState(MenuState.ACTIVE);
        
-        init();
+        init()
         while (mainMenu.isActive()) {
             try {
                 mainMenu.display().choose(sc).execute();

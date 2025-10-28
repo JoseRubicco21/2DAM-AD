@@ -1,0 +1,4 @@
+services:
+  alpi:
+    image: projectdiscovery/subfinder:latest
+    command: "tail -f > /dev/null"
