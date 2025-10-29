@@ -1,6 +1,8 @@
 package com.ud2_at1.services.menu.implementations;
 import java.util.Scanner;
 
+import com.ud2_at1.controllers.MySQLGeneralController;
+import com.ud2_at1.models.generic.Database;
 import com.ud2_at1.services.menu.Menu;
 import com.ud2_at1.services.menu.actions.ExitMenuAction;
 import com.ud2_at1.services.menu.actions.main_menu.GestorBibliotecaMenuRunAction;
@@ -11,9 +13,13 @@ import com.ud2_at1.services.menu.exceptions.InvalidOptionException;
 public class MainMenu extends Menu {
 
     Scanner sc;
+    Database db;
+    MySQLGeneralController generalController;
     // We create the constructor we're the implementation details of the menu is actually set. This is to have a set state.
-    public MainMenu(Scanner sc){
+    public MainMenu(Scanner sc, Database db){
         this.sc = sc;
+        this.db = db;
+        this.generalController = new MySQLGeneralController(db);
         this.addOption(new MenuOption("Gestionar DB", new GestorBibliotecaMenuRunAction(sc)));
         this.addOption(new MenuOption("Salir", new ExitMenuAction()));
     }

@@ -2,6 +2,7 @@ package com.ud2_at1.services.menu.actions.main_menu;
 
 import java.util.Scanner;
 
+import com.ud2_at1.models.generic.Database;
 import com.ud2_at1.services.menu.Menu;
 import com.ud2_at1.services.menu.components.MenuAction;
 import com.ud2_at1.services.menu.exceptions.InvalidInputException;
@@ -14,10 +15,9 @@ public class GestorBibliotecaMenuRunAction extends MenuAction {
 
     private Scanner sc;
     private Menu menu;
-
     public GestorBibliotecaMenuRunAction(Scanner sc){
         this.sc = sc;
-        this.menu = new GestorBibliotecaMenu();
+        this.menu = new GestorBibliotecaMenu(sc);
         this.menu.setState(MenuState.ACTIVE);
     }
 

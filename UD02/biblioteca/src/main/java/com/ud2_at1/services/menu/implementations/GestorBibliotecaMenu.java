@@ -1,5 +1,8 @@
 package com.ud2_at1.services.menu.implementations;
 
+import java.util.Scanner;
+
+import com.ud2_at1.models.generic.Database;
 import com.ud2_at1.services.menu.Menu;
 import com.ud2_at1.services.menu.actions.ExitMenuAction;
 import com.ud2_at1.services.menu.actions.gestor_biblioteca.CreateBibliotecaMenuAction;
@@ -9,7 +12,9 @@ import com.ud2_at1.services.menu.exceptions.InvalidOptionException;
 
 public class GestorBibliotecaMenu extends Menu {
 
-    public GestorBibliotecaMenu(){
+
+    public GestorBibliotecaMenu(Scanner sc){
+
         this.addOption(new MenuOption("Crear Base de datos", new CreateBibliotecaMenuAction()));
         this.addOption(new MenuOption("Salir", new ExitMenuAction()));
     }

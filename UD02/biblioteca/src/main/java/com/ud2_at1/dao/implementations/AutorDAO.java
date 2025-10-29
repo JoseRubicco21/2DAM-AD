@@ -1,9 +1,13 @@
-package com.ud2_at1.dao.concrete_dao;
+package com.ud2_at1.dao.implementations;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 import com.ud2_at1.dao.Dao;
 import com.ud2_at1.models.Autor;
+import com.ud2_at1.services.database.query_builder.QueryBuilder;
 
 public class AutorDAO implements Dao<Autor, Integer> {
 
@@ -49,5 +53,26 @@ public class AutorDAO implements Dao<Autor, Integer> {
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
 
-    
+       public PreparedStatement createTableStatement(Connection connection) throws SQLException {
+        QueryBuilder qb = new QueryBuilder();
+        QueryBuilder qbModel = new QueryBuilder();
+        
+        String modelQuery = qbModel
+            .INPUT("id").PRIMARY().KEY().AUTO_INCREMENT()
+            .INPUT("first_name").VARCHAR(100).NOTNULL()
+            .INPUT("last_name").VARCHAR(100).NOTNULL()
+            .build();
+        
+        String query = qb.CREATE().TABLE().INPUT("autores").MODEL(modelQuery).build();
+        
+        return connection.prepareStatement(query);
+    }
+ 
+    public PreparedStatement deleteTableStatement(Connection connection) throws SQLException {
+        QueryBuilder qb = new QueryBuilder();
+        
+        String query = qb.DROP().TABLE().IF().EXISTS().INPUT("libros").build();
+        
+        return connection.prepareStatement(query);
+    }
 }

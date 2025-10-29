@@ -1,15 +1,21 @@
 package com.ud2_at1.services.menu.actions.gestor_biblioteca;
+import com.ud2_at1.services.logger.Logger;
+import com.mysql.cj.log.Log;
 import com.ud2_at1.controllers.MySQLGeneralController;
+import com.ud2_at1.dao.generic.DatabaseDAO;
+import com.ud2_at1.dao.generic.DatabaseUserDAO;
+import com.ud2_at1.models.generic.Database;
+import com.ud2_at1.services.database.DatabaseService;
 import com.ud2_at1.services.menu.components.MenuAction;
 import com.ud2_at1.services.menu.state.MenuResult;
 
 public class CreateBibliotecaMenuAction extends MenuAction {
 
 
-    private MySQLGeneralController dbController;
+
+    private DatabaseDAO databaseDAO = new DatabaseDAO();
 
     public CreateBibliotecaMenuAction(){
-        this.dbController = new MySQLGeneralController();
     }
 
     @Override
@@ -21,9 +27,15 @@ public class CreateBibliotecaMenuAction extends MenuAction {
     private boolean createDataBaseOperation(boolean wantToDelete){
         boolean result;
         if(wantToDelete){
-           result =  dbController.delete(MySQLGeneralController::deleteDatabase);
+            Logger.info("Eliminando base de datos...");
+            databaseDAO.deleteDatabase();
+            Logger.success("Base de datos eliminada correctamente.");
         }
-           result = dbController.create(MySQLGeneralController::createDatabase);
+        
+        Logger.info("Creando base de datos...");
+        databaseDAO.createDatabase();
+        Logger.success("Base de datos creada correctamente.");
+        result = true;
         return result;
         }
 }

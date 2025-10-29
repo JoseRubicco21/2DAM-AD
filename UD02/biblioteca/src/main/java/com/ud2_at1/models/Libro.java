@@ -7,4 +7,11 @@ public class Libro {
     Autor author;
     Date date;
     String ISBN;
+
+    public Libro(String title, Autor author, Date date, String ISBN) {
+        this.title = title;
+        this.author = author;
+        this.date = date;
+        this.ISBN = ISBN;
+    }
 }
