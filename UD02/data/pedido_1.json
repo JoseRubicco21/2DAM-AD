@@ -1,0 +1,23 @@
+{
+  "pedido": {
+    "id": 1,
+    "fecha": "2025-11-01",
+    "cantidad": 2,
+    "total": 1999.98,
+    "cliente": {
+      "dni": "12345678A",
+      "nombre": "Juan Pérez"
+    },
+    "producto": {
+      "id": 1,
+      "nombre": "Laptop",
+      "descripcion": "High-performance laptop",
+      "precio": 999.99
+    }
+  },
+  "metadata": {
+    "exportedAt": "2025-11-01T23:59:39.903670200",
+    "exportedBy": "Bolechas System",
+    "version": "1.0"
+  }
+}
