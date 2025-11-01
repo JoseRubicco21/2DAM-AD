@@ -26,7 +26,9 @@
         CRITICAL(Colors.ORANGE, Colors.BG_ORANGE_3),
         
         /** Network level - Bright purple text on bright purple background. */
-        NETWORK(Colors.WHITE, Colors.BG_BRIGHT_PURPLE);
+        NETWORK(Colors.WHITE, Colors.BG_BRIGHT_PURPLE),
+        /** Query level - Purple text on black background. */
+        QUERY(Colors.PURPLE, Colors.BG_BLACK);
         
         /** The foreground color for this log level. */
         private final Colors foreground;

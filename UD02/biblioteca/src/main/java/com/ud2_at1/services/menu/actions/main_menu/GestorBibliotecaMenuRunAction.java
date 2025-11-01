@@ -2,7 +2,6 @@ package com.ud2_at1.services.menu.actions.main_menu;
 
 import java.util.Scanner;
 
-import com.ud2_at1.models.generic.Database;
 import com.ud2_at1.services.menu.Menu;
 import com.ud2_at1.services.menu.components.MenuAction;
 import com.ud2_at1.services.menu.exceptions.InvalidInputException;

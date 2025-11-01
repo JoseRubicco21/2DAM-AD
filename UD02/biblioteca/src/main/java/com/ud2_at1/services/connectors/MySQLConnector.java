@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import com.ud2_at1.services.connectors.exceptions.MySQLConnectorException;
 import com.ud2_at1.services.loaders.ConfigLoader;
+import com.ud2_at1.services.logger.Logger;
 
 public class MySQLConnector {
 
@@ -46,6 +47,7 @@ public class MySQLConnector {
 
     public static Connection getConnectionAsRoot() throws MySQLConnectorException{
         try{
+            ConfigLoader.getInstance();
             Connection connection = DriverManager.getConnection(ConfigLoader.get("mysql.url"), "root", "root");
             return connection;
         } catch (SQLException e){
