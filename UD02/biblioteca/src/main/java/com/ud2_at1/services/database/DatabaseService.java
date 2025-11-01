@@ -49,6 +49,27 @@ public class DatabaseService {
         return result;
     }
 
+    /**
+     * Execute statement operations on the specific database
+     * This method uses a direct connection to the database for operations that need to work on tables
+     */
+    public static boolean executeStatementOnDatabase(StatementOperation operation) throws MySQLConnectorException, SQLException {
+        boolean result;
+        try (Connection connection = MySQLConnector.getConnectionToDatabaseAsRoot();
+            PreparedStatement pss = operation.statementOperation(connection)) {
+            result = pss.execute();
+        } catch (MySQLConnectorException e) {
+            e.displayExceptionMessage();
+            throw e;
+        } catch (SQLException e) {
+            throw new MySQLConnectorException(e.getMessage());
+        } catch (UnsupportedOperationException e) {
+            Logger.error("Unsupported operation: " + e.getMessage());
+            throw e;
+        }
+        return result;
+    }
+
     public static Database initializeDatabase() {
         ConfigLoader.getInstance();
         Logger.info("Starting database initialization...");
@@ -79,31 +100,34 @@ public class DatabaseService {
         // Initialize schema using the same connection
         initializeSchema(db);
 
+        // Test database connectivity for DAO operations
+        if (testDatabaseConnectivity()) {
+            Logger.success("Database is ready for operations!");
+        } else {
+            Logger.error("Database connectivity test failed!");
+        }
+
         Logger.success("Database initialization completed!");
         return db;
     }
 
     /**
      * Initialize database schema by creating tables from annotated model classes
-     * Uses a single connection to ensure database context is maintained
+     * Uses a connection to the specific database for schema operations
      */
     private static void initializeSchema(Database database) {
         Logger.info("Starting schema initialization...");
         
         AnnotationSchemaBuilder schemaBuilder = new AnnotationSchemaBuilder("mysql");
         
-        try (Connection connection = MySQLConnector.getConnectionAsRoot()) {
-            // First, ensure we're using the correct database
-            Logger.info("Selecting database: " + database.getName());
-            try (PreparedStatement useStmt = database.useDatabaseSQLStatement(connection)) {
-                useStmt.execute();
-                Logger.success("Database " + database.getName() + " selected");
-            }
+        try (Connection connection = MySQLConnector.getConnectionToDatabaseAsRoot()) {
+            // We're already connected to the specific database, no need for USE statement
+            Logger.success("Connected directly to database: " + database.getName());
             
             // Verify database selection
             verifyDatabaseSelection(connection, database.getName());
             createTables(schemaBuilder, connection);
-            addConstraints(connection); // REMOVED schemaBuilder parameter since we're not using it
+            addConstraints(connection); 
             
         } catch (MySQLConnectorException | SQLException e) {
             Logger.error("Failed to initialize schema: " + e.getMessage());
@@ -127,12 +151,44 @@ public class DatabaseService {
                     
                     if (!expectedDatabase.equals(currentDatabase)) {
                         Logger.warning("Expected database: " + expectedDatabase + ", but using: " + currentDatabase);
+                    } else {
+                        Logger.success("Successfully connected to database: " + currentDatabase);
                     }
                 }
             }
         } catch (SQLException e) {
             Logger.error("Failed to verify database selection: " + e.getMessage());
         }
+    }
+
+    /**
+     * Test database connectivity and verify we can connect to the specific database
+     */
+    public static boolean testDatabaseConnectivity() {
+        Logger.info("Testing database connectivity...");
+        
+        try (Connection connection = MySQLConnector.getConnectionToDatabase()) {
+            QueryBuilder qb = QueryBuilderFactory.createMySQL();
+            String query = qb.SELECT().INPUT("DATABASE() as current_db, VERSION() as version").build();
+            
+            try (PreparedStatement stmt = connection.prepareStatement(query);
+                 ResultSet rs = stmt.executeQuery()) {
+                
+                if (rs.next()) {
+                    String currentDb = rs.getString("current_db");
+                    String version = rs.getString("version");
+                    Logger.success("Database connectivity test successful!");
+                    Logger.info("Connected to database: " + currentDb);
+                    Logger.info("MySQL version: " + version);
+                    return true;
+                }
+            }
+        } catch (MySQLConnectorException | SQLException e) {
+            Logger.error("Database connectivity test failed: " + e.getMessage());
+            return false;
+        }
+        
+        return false;
     }
 
     /**
