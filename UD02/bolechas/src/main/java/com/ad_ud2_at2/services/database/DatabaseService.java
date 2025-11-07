@@ -10,7 +10,7 @@ import java.util.List;
 import com.ad_ud2_at2.annotations.Column;
 import com.ad_ud2_at2.annotations.Table;
 import com.ad_ud2_at2.services.connectors.MySQLConnector;
-import com.ad_ud2_at2.services.connectors.exceptions.MySQLConnectorException;
+import com.ad_ud2_at2.services.connectors.exceptions.ConnectorException;
 import com.ad_ud2_at2.services.database.query_builder.QueryBuilder;
 import com.ad_ud2_at2.services.database.query_builder.QueryBuilderFactory;
 import com.ad_ud2_at2.services.database.schema.annotations.AnnotationSchemaBuilder;
@@ -30,7 +30,7 @@ public class DatabaseService {
         Pedido.class
     );
     
-    public static boolean executeStatement(String query) throws MySQLConnectorException, SQLException {
+    public static boolean executeStatement(String query) throws ConnectorException, SQLException {
         try (Connection connection = MySQLConnector.getConnectionAsRoot()) {
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.execute();
@@ -46,7 +46,7 @@ public class DatabaseService {
      * Execute statement operations on the specific database
      * This method uses a direct connection to the database for operations that need to work on tables
      */
-    public static boolean executeStatementOnDatabase(String query) throws MySQLConnectorException, SQLException {
+    public static boolean executeStatementOnDatabase(String query) throws ConnectorException, SQLException {
         try (Connection connection = MySQLConnector.getConnectionToDatabaseAsRoot()) {
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.execute();
@@ -96,7 +96,7 @@ public class DatabaseService {
             
             Logger.success("Schema recreated successfully");
             
-        } catch (MySQLConnectorException | SQLException e) {
+        } catch (ConnectorException | SQLException e) {
             Logger.error("Failed to recreate schema: " + e.getMessage());
         }
     }
@@ -129,7 +129,7 @@ public class DatabaseService {
     /**
      * Create database if it doesn't exist
      */
-    private static void createDatabaseIfNotExists() throws MySQLConnectorException, SQLException {
+    private static void createDatabaseIfNotExists() throws ConnectorException, SQLException {
         Logger.info("Creating database if not exists...");
         
         ConfigLoader.getInstance();
@@ -146,7 +146,7 @@ public class DatabaseService {
     /**
      * Create database user and grant privileges
      */
-    private static void createUserAndGrantPrivileges() throws MySQLConnectorException, SQLException {
+    private static void createUserAndGrantPrivileges() throws ConnectorException, SQLException {
         Logger.info("Creating database user and granting privileges...");
         
         ConfigLoader.getInstance();
@@ -225,7 +225,7 @@ public class DatabaseService {
             createTables(schemaBuilder, connection);
             addConstraints(connection); 
             
-        } catch (MySQLConnectorException | SQLException e) {
+        } catch (ConnectorException | SQLException e) {
             Logger.error("Failed to initialize schema: " + e.getMessage());
         }
     }
@@ -357,7 +357,7 @@ public class DatabaseService {
         try (Connection connection = MySQLConnector.getConnectionToDatabaseAsRoot()) {
             Logger.success("Database connectivity test passed");
             return true;
-        } catch (MySQLConnectorException | SQLException e) {
+        } catch (ConnectorException | SQLException e) {
             Logger.error("Database connectivity test failed: " + e.getMessage());
             return false;
         }

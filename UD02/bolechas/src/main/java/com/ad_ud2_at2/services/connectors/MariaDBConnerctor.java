@@ -8,11 +8,10 @@ import com.ad_ud2_at2.services.connectors.exceptions.ConnectorException;
 import com.ad_ud2_at2.services.loaders.ConfigLoader;
 import com.ad_ud2_at2.services.logger.Logger;
 
-public class MySQLConnector {
-
+public class MariaDBConnerctor {
     private Connection connection;
 
-    public MySQLConnector(String username, String pasword, String url) throws ConnectorException {
+    public MariaDBConnerctor(String username, String pasword, String url) throws ConnectorException {
         try {
             this.connection = DriverManager.getConnection(url, username, pasword);
         } catch (SQLException e) {
@@ -21,7 +20,7 @@ public class MySQLConnector {
         }
     }
 
-    public MySQLConnector() throws ConnectorException {
+    public MariaDBConnerctor() throws ConnectorException {
         try {
             // Initialize ConfigLoader
             ConfigLoader.getInstance();
@@ -43,7 +42,7 @@ public class MySQLConnector {
     }
 
     // Load the config Loader in the Stack call passing the invocation of getInstance.
-    public MySQLConnector(ConfigLoader config) throws ConnectorException {
+    public MariaDBConnerctor(ConfigLoader config) throws ConnectorException {
         try {
             String baseUrl = ConfigLoader.get("mysql.url");
             String databaseName = ConfigLoader.get("mysql.dbname");

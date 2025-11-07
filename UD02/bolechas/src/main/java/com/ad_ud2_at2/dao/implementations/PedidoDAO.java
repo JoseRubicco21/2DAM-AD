@@ -12,7 +12,7 @@ import com.ad_ud2_at2.models.Pedido;
 import com.ad_ud2_at2.models.Cliente;
 import com.ad_ud2_at2.models.Producto;
 import com.ad_ud2_at2.services.connectors.MySQLConnector;
-import com.ad_ud2_at2.services.connectors.exceptions.MySQLConnectorException;
+import com.ad_ud2_at2.services.connectors.exceptions.ConnectorException;
 import com.ad_ud2_at2.services.logger.Logger;
 
 public class PedidoDAO implements Dao<Pedido, Integer> {
@@ -46,7 +46,7 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
                 pedido.setProducto(producto);
                 pedido.setCliente(cliente);
             }
-        } catch (MySQLConnectorException e) {
+        } catch (ConnectorException e) {
             Logger.error("MySQLConnectorException in get(): " + e.getMessage());
         } catch (SQLException e) {
             Logger.error("SQLException in get(): " + e.getMessage());
@@ -80,7 +80,7 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
                 pedido.setCliente(cliente);
                 pedidos.add(pedido);
             }
-        } catch (MySQLConnectorException e) {
+        } catch (ConnectorException e) {
             Logger.error("MySQLConnectorException in getAll(): " + e.getMessage());
         } catch (SQLException e) {
             Logger.error("SQLException in getAll(): " + e.getMessage());
@@ -109,7 +109,7 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
                 Logger.success("Pedido saved successfully");
                 return true;
             }
-        } catch (MySQLConnectorException e) {
+        } catch (ConnectorException e) {
             Logger.error("MySQLConnectorException in save(): " + e.getMessage());
         } catch (SQLException e) {
             Logger.error("SQLException in save(): " + e.getMessage());
@@ -140,7 +140,7 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
             } else {
                 Logger.warning("No pedido found with ID: " + obj.getId());
             }
-        } catch (MySQLConnectorException e) {
+        } catch (ConnectorException e) {
             Logger.error("MySQLConnectorException in update(): " + e.getMessage());
         } catch (SQLException e) {
             Logger.error("SQLException in update(): " + e.getMessage());
@@ -176,7 +176,7 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
             } else {
                 Logger.warning("No pedido found with ID: " + id);
             }
-        } catch (MySQLConnectorException e) {
+        } catch (ConnectorException e) {
             Logger.error("MySQLConnectorException in deleteById(): " + e.getMessage());
         } catch (SQLException e) {
             Logger.error("SQLException in deleteById(): " + e.getMessage());
@@ -193,7 +193,7 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
             int affectedRows = pss.executeUpdate();
             Logger.warning("Deleted all pedidos (" + affectedRows + " rows affected)");
             return true;
-        } catch (MySQLConnectorException e) {
+        } catch (ConnectorException e) {
             Logger.error("MySQLConnectorException in deleteAll(): " + e.getMessage());
         } catch (SQLException e) {
             Logger.error("SQLException in deleteAll(): " + e.getMessage());
@@ -237,7 +237,7 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
                 pedido.setCliente(cliente);
                 pedidos.add(pedido);
             }
-        } catch (MySQLConnectorException e) {
+        } catch (ConnectorException e) {
             Logger.error("MySQLConnectorException in getByClienteDni(): " + e.getMessage());
         } catch (SQLException e) {
             Logger.error("SQLException in getByClienteDni(): " + e.getMessage());
@@ -272,7 +272,7 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
                 pedido.setCliente(cliente);
                 pedidos.add(pedido);
             }
-        } catch (MySQLConnectorException e) {
+        } catch (ConnectorException e) {
             Logger.error("MySQLConnectorException in getByProductoId(): " + e.getMessage());
         } catch (SQLException e) {
             Logger.error("SQLException in getByProductoId(): " + e.getMessage());
@@ -294,7 +294,7 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
             if (rs.next()) {
                 count = rs.getInt(1);
             }
-        } catch (MySQLConnectorException e) {
+        } catch (ConnectorException e) {
             Logger.error("MySQLConnectorException in count(): " + e.getMessage());
         } catch (SQLException e) {
             Logger.error("SQLException in count(): " + e.getMessage());
@@ -321,7 +321,7 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
             if (rs.next()) {
                 count = rs.getInt(1);
             }
-        } catch (MySQLConnectorException e) {
+        } catch (ConnectorException e) {
             Logger.error("MySQLConnectorException in countByCliente(): " + e.getMessage());
         } catch (SQLException e) {
             Logger.error("SQLException in countByCliente(): " + e.getMessage());

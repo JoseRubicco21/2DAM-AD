@@ -10,7 +10,7 @@ import java.util.List;
 import com.ad_ud2_at2.dao.Dao;
 import com.ad_ud2_at2.models.Cliente;
 import com.ad_ud2_at2.services.connectors.MySQLConnector;
-import com.ad_ud2_at2.services.connectors.exceptions.MySQLConnectorException;
+import com.ad_ud2_at2.services.connectors.exceptions.ConnectorException;
 import com.ad_ud2_at2.services.logger.Logger;
 
 public class ClienteDAO implements Dao<Cliente, String> {
@@ -30,7 +30,7 @@ public class ClienteDAO implements Dao<Cliente, String> {
                 cliente.setDni(rs.getString("dni"));
                 cliente.setNombre(rs.getString("nombre"));
             }
-        } catch (MySQLConnectorException e) {
+        } catch (ConnectorException e) {
             Logger.error("MySQLConnectorException in get(): " + e.getMessage());
         } catch (SQLException e) {
             Logger.error("SQLException in get(): " + e.getMessage());
@@ -53,7 +53,7 @@ public class ClienteDAO implements Dao<Cliente, String> {
                 cliente.setNombre(rs.getString("nombre"));
                 clientes.add(cliente);
             }
-        } catch (MySQLConnectorException e) {
+        } catch (ConnectorException e) {
             Logger.error("MySQLConnectorException in getAll(): " + e.getMessage());
         } catch (SQLException e) {
             Logger.error("SQLException in getAll(): " + e.getMessage());
@@ -80,7 +80,7 @@ public class ClienteDAO implements Dao<Cliente, String> {
                 Logger.success("Cliente saved successfully: " + objeto.getDni());
                 return true;
             }
-        } catch (MySQLConnectorException e) {
+        } catch (ConnectorException e) {
             Logger.error("MySQLConnectorException in save(): " + e.getMessage());
         } catch (SQLException e) {
             Logger.error("SQLException in save(): " + e.getMessage());
@@ -108,7 +108,7 @@ public class ClienteDAO implements Dao<Cliente, String> {
             } else {
                 Logger.warning("No cliente found with DNI: " + obj.getDni());
             }
-        } catch (MySQLConnectorException e) {
+        } catch (ConnectorException e) {
             Logger.error("MySQLConnectorException in update(): " + e.getMessage());
         } catch (SQLException e) {
             Logger.error("SQLException in update(): " + e.getMessage());
@@ -144,7 +144,7 @@ public class ClienteDAO implements Dao<Cliente, String> {
             } else {
                 Logger.warning("No cliente found with DNI: " + dni);
             }
-        } catch (MySQLConnectorException e) {
+        } catch (ConnectorException e) {
             Logger.error("MySQLConnectorException in deleteById(): " + e.getMessage());
         } catch (SQLException e) {
             Logger.error("SQLException in deleteById(): " + e.getMessage());
@@ -161,7 +161,7 @@ public class ClienteDAO implements Dao<Cliente, String> {
             int affectedRows = pss.executeUpdate();
             Logger.warning("Deleted all clientes (" + affectedRows + " rows affected)");
             return true;
-        } catch (MySQLConnectorException e) {
+        } catch (ConnectorException e) {
             Logger.error("MySQLConnectorException in deleteAll(): " + e.getMessage());
         } catch (SQLException e) {
             Logger.error("SQLException in deleteAll(): " + e.getMessage());
@@ -196,7 +196,7 @@ public class ClienteDAO implements Dao<Cliente, String> {
                 cliente.setNombre(rs.getString("nombre"));
                 clientes.add(cliente);
             }
-        } catch (MySQLConnectorException e) {
+        } catch (ConnectorException e) {
             Logger.error("MySQLConnectorException in searchByNombre(): " + e.getMessage());
         } catch (SQLException e) {
             Logger.error("SQLException in searchByNombre(): " + e.getMessage());
@@ -218,7 +218,7 @@ public class ClienteDAO implements Dao<Cliente, String> {
             if (rs.next()) {
                 count = rs.getInt(1);
             }
-        } catch (MySQLConnectorException e) {
+        } catch (ConnectorException e) {
             Logger.error("MySQLConnectorException in count(): " + e.getMessage());
         } catch (SQLException e) {
             Logger.error("SQLException in count(): " + e.getMessage());
