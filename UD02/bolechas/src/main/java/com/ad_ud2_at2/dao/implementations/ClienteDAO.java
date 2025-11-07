@@ -9,17 +9,39 @@ import java.util.List;
 
 import com.ad_ud2_at2.dao.Dao;
 import com.ad_ud2_at2.models.Cliente;
-import com.ad_ud2_at2.services.connectors.MySQLConnector;
+import com.ad_ud2_at2.services.connectors.GenericConnector;
+import com.ad_ud2_at2.services.connectors.SQLConnector;
 import com.ad_ud2_at2.services.connectors.exceptions.ConnectorException;
 import com.ad_ud2_at2.services.logger.Logger;
 
+/**
+ * Implementación del patrón DAO para la entidad Cliente.
+ * Proporciona operaciones CRUD (Create, Read, Update, Delete) para gestionar
+ * clientes en la base de datos MySQL.
+ * 
+ * Esta clase implementa la interfaz Dao<Cliente, String> donde:
+ * - Cliente es el tipo de entidad gestionada
+ * - String es el tipo de la clave primaria (DNI)
+ * 
+ * @author [Tu nombre]
+ * @version 1.0
+ * @since 2025-11-07
+ */
 public class ClienteDAO implements Dao<Cliente, String> {
 
+    /**
+     * Obtiene un cliente específico por su DNI.
+     * 
+     * @param dni El DNI del cliente a buscar (clave primaria)
+     * @return El objeto Cliente encontrado, o null si no existe
+     * @throws ConnectorException Si hay problemas de conexión a la base de datos
+     * @throws SQLException Si hay errores en la consulta SQL
+     */
     @Override
     public Cliente get(String dni) {
         Cliente cliente = null;
         try {
-            MySQLConnector connector = new MySQLConnector();
+            GenericConnector connector = new SQLConnector();
             Connection connection = connector.getConnection();
             PreparedStatement pss = connection.prepareStatement("SELECT * FROM clientes WHERE dni = ?");
             pss.setString(1, dni);
@@ -38,11 +60,18 @@ public class ClienteDAO implements Dao<Cliente, String> {
         return cliente;
     }
 
+    /**
+     * Obtiene todos los clientes de la base de datos.
+     * 
+     * @return Lista con todos los clientes existentes. Lista vacía si no hay clientes
+     * @throws ConnectorException Si hay problemas de conexión a la base de datos
+     * @throws SQLException Si hay errores en la consulta SQL
+     */
     @Override
     public List<Cliente> getAll() {
         List<Cliente> clientes = new ArrayList<>();
         try {
-            MySQLConnector connector = new MySQLConnector();
+            GenericConnector connector = new SQLConnector();
             Connection connection = connector.getConnection();
             PreparedStatement pss = connection.prepareStatement("SELECT * FROM clientes");
             ResultSet rs = pss.executeQuery();
@@ -61,6 +90,14 @@ public class ClienteDAO implements Dao<Cliente, String> {
         return clientes;
     }
 
+    /**
+     * Guarda un nuevo cliente en la base de datos.
+     * 
+     * @param objeto El cliente a guardar. No debe ser null y debe tener DNI válido
+     * @return true si el cliente se guardó correctamente, false en caso contrario
+     * @throws ConnectorException Si hay problemas de conexión a la base de datos
+     * @throws SQLException Si hay errores en la consulta SQL o el DNI ya existe
+     */
     @Override
     public boolean save(Cliente objeto) {
         if (objeto == null || objeto.getDni() == null || objeto.getDni().trim().isEmpty()) {
@@ -69,7 +106,7 @@ public class ClienteDAO implements Dao<Cliente, String> {
         }
         
         try {
-            MySQLConnector connector = new MySQLConnector();
+            GenericConnector connector = new SQLConnector();
             Connection connection = connector.getConnection();
             PreparedStatement pss = connection.prepareStatement("INSERT INTO clientes (dni, nombre) VALUES (?, ?)");
             pss.setString(1, objeto.getDni());
@@ -88,6 +125,14 @@ public class ClienteDAO implements Dao<Cliente, String> {
         return false;
     }
 
+    /**
+     * Actualiza los datos de un cliente existente en la base de datos.
+     * Solo actualiza el campo 'nombre', ya que el DNI es la clave primaria.
+     * 
+     * @param obj El cliente con los datos actualizados. Debe tener DNI válido
+     * @throws ConnectorException Si hay problemas de conexión a la base de datos
+     * @throws SQLException Si hay errores en la consulta SQL
+     */
     @Override
     public void update(Cliente obj) {
         if (obj == null || obj.getDni() == null || obj.getDni().trim().isEmpty()) {
@@ -96,7 +141,7 @@ public class ClienteDAO implements Dao<Cliente, String> {
         }
         
         try {
-            MySQLConnector connector = new MySQLConnector();
+            GenericConnector connector = new SQLConnector();
             Connection connection = connector.getConnection();
             PreparedStatement pss = connection.prepareStatement("UPDATE clientes SET nombre = ? WHERE dni = ?");
             pss.setString(1, obj.getNombre());
@@ -115,6 +160,13 @@ public class ClienteDAO implements Dao<Cliente, String> {
         }
     }
 
+    /**
+     * Elimina un cliente de la base de datos.
+     * Utiliza internamente el método deleteById().
+     * 
+     * @param obj El cliente a eliminar. Debe tener DNI válido
+     * @return true si el cliente se eliminó correctamente, false en caso contrario
+     */
     @Override
     public boolean delete(Cliente obj) {
         if (obj == null || obj.getDni() == null || obj.getDni().trim().isEmpty()) {
@@ -124,6 +176,14 @@ public class ClienteDAO implements Dao<Cliente, String> {
         return deleteById(obj.getDni());
     }
 
+    /**
+     * Elimina un cliente de la base de datos por su DNI.
+     * 
+     * @param dni El DNI del cliente a eliminar
+     * @return true si el cliente se eliminó correctamente, false si no se encontró o hubo error
+     * @throws ConnectorException Si hay problemas de conexión a la base de datos
+     * @throws SQLException Si hay errores en la consulta SQL
+     */
     @Override
     public boolean deleteById(String dni) {
         if (dni == null || dni.trim().isEmpty()) {
@@ -132,7 +192,7 @@ public class ClienteDAO implements Dao<Cliente, String> {
         }
         
         try {
-            MySQLConnector connector = new MySQLConnector();
+            GenericConnector connector = new SQLConnector();
             Connection connection = connector.getConnection();
             PreparedStatement pss = connection.prepareStatement("DELETE FROM clientes WHERE dni = ?");
             pss.setString(1, dni);
@@ -152,10 +212,18 @@ public class ClienteDAO implements Dao<Cliente, String> {
         return false;
     }
 
+    /**
+     * Elimina todos los clientes de la base de datos.
+     * ¡PRECAUCIÓN! Esta operación es irreversible.
+     * 
+     * @return true si la operación se completó correctamente, false en caso de error
+     * @throws ConnectorException Si hay problemas de conexión a la base de datos
+     * @throws SQLException Si hay errores en la consulta SQL
+     */
     @Override
     public boolean deleteAll() {
         try {
-            MySQLConnector connector = new MySQLConnector();
+            GenericConnector connector = new SQLConnector();
             Connection connection = connector.getConnection();
             PreparedStatement pss = connection.prepareStatement("DELETE FROM clientes");
             int affectedRows = pss.executeUpdate();
@@ -172,19 +240,28 @@ public class ClienteDAO implements Dao<Cliente, String> {
     // Additional custom methods for Cliente
 
     /**
-     * Check if a cliente exists by DNI
+     * Verifica si existe un cliente con el DNI especificado.
+     * 
+     * @param dni El DNI a verificar
+     * @return true si existe un cliente con ese DNI, false en caso contrario
      */
     public boolean exists(String dni) {
         return get(dni) != null;
     }
 
     /**
-     * Search clientes by nombre (partial match)
+     * Busca clientes por nombre utilizando coincidencia parcial.
+     * La búsqueda es case-sensitive y utiliza el operador LIKE.
+     * 
+     * @param searchTerm El término de búsqueda para el nombre
+     * @return Lista de clientes que contienen el término en su nombre
+     * @throws ConnectorException Si hay problemas de conexión a la base de datos
+     * @throws SQLException Si hay errores en la consulta SQL
      */
     public List<Cliente> searchByNombre(String searchTerm) {
         List<Cliente> clientes = new ArrayList<>();
         try {
-            MySQLConnector connector = new MySQLConnector();
+            GenericConnector connector = new SQLConnector();
             Connection connection = connector.getConnection();
             PreparedStatement pss = connection.prepareStatement("SELECT * FROM clientes WHERE nombre LIKE ?");
             pss.setString(1, "%" + searchTerm + "%");
@@ -205,12 +282,16 @@ public class ClienteDAO implements Dao<Cliente, String> {
     }
 
     /**
-     * Get the count of all clientes
+     * Obtiene el número total de clientes en la base de datos.
+     * 
+     * @return El número total de clientes, 0 si no hay clientes o en caso de error
+     * @throws ConnectorException Si hay problemas de conexión a la base de datos
+     * @throws SQLException Si hay errores en la consulta SQL
      */
     public int count() {
         int count = 0;
         try {
-            MySQLConnector connector = new MySQLConnector();
+            GenericConnector connector = new SQLConnector();
             Connection connection = connector.getConnection();
             PreparedStatement pss = connection.prepareStatement("SELECT COUNT(*) FROM clientes");
             ResultSet rs = pss.executeQuery();

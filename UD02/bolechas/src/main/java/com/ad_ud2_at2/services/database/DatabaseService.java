@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.ad_ud2_at2.annotations.Column;
 import com.ad_ud2_at2.annotations.Table;
-import com.ad_ud2_at2.services.connectors.MySQLConnector;
+import com.ad_ud2_at2.services.connectors.SQLConnector;
 import com.ad_ud2_at2.services.connectors.exceptions.ConnectorException;
 import com.ad_ud2_at2.services.database.query_builder.QueryBuilder;
 import com.ad_ud2_at2.services.database.query_builder.QueryBuilderFactory;
@@ -31,7 +31,7 @@ public class DatabaseService {
     );
     
     public static boolean executeStatement(String query) throws ConnectorException, SQLException {
-        try (Connection connection = MySQLConnector.getConnectionAsRoot()) {
+        try (Connection connection = SQLConnector.getConnectionAsRoot()) {
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.execute();
             stmt.close();
@@ -47,7 +47,7 @@ public class DatabaseService {
      * This method uses a direct connection to the database for operations that need to work on tables
      */
     public static boolean executeStatementOnDatabase(String query) throws ConnectorException, SQLException {
-        try (Connection connection = MySQLConnector.getConnectionToDatabaseAsRoot()) {
+        try (Connection connection = SQLConnector.getConnectionToDatabaseAsRoot()) {
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.execute();
             stmt.close();
@@ -85,7 +85,7 @@ public class DatabaseService {
     public static void recreateSchema() {
         Logger.info("Recreating database schema...");
         
-        try (Connection connection = MySQLConnector.getConnectionToDatabaseAsRoot()) {
+        try (Connection connection = SQLConnector.getConnectionToDatabaseAsRoot()) {
             // Drop tables in reverse order to handle foreign key dependencies
             dropTablesInOrder(connection);
             
@@ -219,7 +219,7 @@ public class DatabaseService {
         
         AnnotationSchemaBuilder schemaBuilder = new AnnotationSchemaBuilder("mysql");
         
-        try (Connection connection = MySQLConnector.getConnectionToDatabaseAsRoot()) {
+        try (Connection connection = SQLConnector.getConnectionToDatabaseAsRoot()) {
             Logger.success("Connected directly to database");
             
             createTables(schemaBuilder, connection);
@@ -354,7 +354,7 @@ public class DatabaseService {
      * Test database connectivity and verify we can connect to the specific database
      */
     public static boolean testDatabaseConnectivity() {
-        try (Connection connection = MySQLConnector.getConnectionToDatabaseAsRoot()) {
+        try (Connection connection = SQLConnector.getConnectionToDatabaseAsRoot()) {
             Logger.success("Database connectivity test passed");
             return true;
         } catch (ConnectorException | SQLException e) {

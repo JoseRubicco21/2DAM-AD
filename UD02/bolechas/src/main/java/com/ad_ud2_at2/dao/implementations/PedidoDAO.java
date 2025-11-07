@@ -11,20 +11,54 @@ import com.ad_ud2_at2.dao.Dao;
 import com.ad_ud2_at2.models.Pedido;
 import com.ad_ud2_at2.models.Cliente;
 import com.ad_ud2_at2.models.Producto;
-import com.ad_ud2_at2.services.connectors.MySQLConnector;
+import com.ad_ud2_at2.services.connectors.GenericConnector;
+import com.ad_ud2_at2.services.connectors.SQLConnector;
 import com.ad_ud2_at2.services.connectors.exceptions.ConnectorException;
 import com.ad_ud2_at2.services.logger.Logger;
 
+/**
+ * Implementación del patrón DAO para la entidad Pedido.
+ * Proporciona operaciones CRUD (Create, Read, Update, Delete) para gestionar
+ * pedidos en la base de datos MySQL, incluyendo relaciones con Cliente y Producto.
+ * 
+ * Esta clase implementa la interfaz Dao<Pedido, Integer> donde:
+ * - Pedido es el tipo de entidad gestionada
+ * - Integer es el tipo de la clave primaria (ID)
+ * 
+ * Los pedidos mantienen relaciones con:
+ * - Cliente (mediante DNI como clave foránea)
+ * - Producto (mediante ID como clave foránea)
+ * 
+ * @author [Tu nombre]
+ * @version 1.0
+ * @since 2025-11-07
+ */
 public class PedidoDAO implements Dao<Pedido, Integer> {
 
+    /**
+     * DAO para gestionar operaciones con clientes relacionados
+     */
     private ClienteDAO clienteDAO = new ClienteDAO();
+    
+    /**
+     * DAO para gestionar operaciones con productos relacionados
+     */
     private ProductoDAO productoDAO = new ProductoDAO();
 
+    /**
+     * Obtiene un pedido específico por su ID, incluyendo las entidades relacionadas.
+     * Carga automáticamente el cliente y producto asociados al pedido.
+     * 
+     * @param id El ID del pedido a buscar (clave primaria)
+     * @return El objeto Pedido encontrado con sus relaciones cargadas, o null si no existe
+     * @throws ConnectorException Si hay problemas de conexión a la base de datos
+     * @throws SQLException Si hay errores en la consulta SQL
+     */
     @Override
     public Pedido get(Integer id) {
         Pedido pedido = null;
         try {
-            MySQLConnector connector = new MySQLConnector();
+            GenericConnector connector = new SQLConnector();
             Connection connection = connector.getConnection();
             PreparedStatement pss = connection.prepareStatement("SELECT * FROM pedidos WHERE id = ?");
             pss.setInt(1, id);
@@ -54,11 +88,19 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
         return pedido;
     }
 
+    /**
+     * Obtiene todos los pedidos de la base de datos, incluyendo las entidades relacionadas.
+     * Carga automáticamente los clientes y productos asociados a cada pedido.
+     * 
+     * @return Lista con todos los pedidos existentes con sus relaciones cargadas. Lista vacía si no hay pedidos
+     * @throws ConnectorException Si hay problemas de conexión a la base de datos
+     * @throws SQLException Si hay errores en la consulta SQL
+     */
     @Override
     public List<Pedido> getAll() {
         List<Pedido> pedidos = new ArrayList<>();
         try {
-            MySQLConnector connector = new MySQLConnector();
+            GenericConnector connector = new SQLConnector();
             Connection connection = connector.getConnection();
             PreparedStatement pss = connection.prepareStatement("SELECT * FROM pedidos");
             ResultSet rs = pss.executeQuery();
@@ -88,6 +130,15 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
         return pedidos;
     }
 
+    /**
+     * Guarda un nuevo pedido en la base de datos.
+     * Requiere que el pedido tenga un cliente y producto válidos asociados.
+     * 
+     * @param objeto El pedido a guardar. No debe ser null y debe tener cliente y producto válidos
+     * @return true si el pedido se guardó correctamente, false en caso contrario
+     * @throws ConnectorException Si hay problemas de conexión a la base de datos
+     * @throws SQLException Si hay errores en la consulta SQL o violación de claves foráneas
+     */
     @Override
     public boolean save(Pedido objeto) {
         if (objeto == null || objeto.getProducto() == null || objeto.getCliente() == null) {
@@ -96,7 +147,7 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
         }
         
         try {
-            MySQLConnector connector = new MySQLConnector();
+            GenericConnector connector = new SQLConnector();
             Connection connection = connector.getConnection();
             PreparedStatement pss = connection.prepareStatement("INSERT INTO pedidos (fecha, cantidad, producto_id, cliente_dni) VALUES (?, ?, ?, ?)");
             pss.setDate(1, objeto.getFecha());
@@ -117,6 +168,14 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
         return false;
     }
 
+    /**
+     * Actualiza los datos de un pedido existente en la base de datos.
+     * Permite modificar fecha, cantidad, producto y cliente asociados.
+     * 
+     * @param obj El pedido con los datos actualizados. Debe tener ID, cliente y producto válidos
+     * @throws ConnectorException Si hay problemas de conexión a la base de datos
+     * @throws SQLException Si hay errores en la consulta SQL o violación de claves foráneas
+     */
     @Override
     public void update(Pedido obj) {
         if (obj == null || obj.getId() <= 0 || obj.getProducto() == null || obj.getCliente() == null) {
@@ -125,7 +184,7 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
         }
         
         try {
-            MySQLConnector connector = new MySQLConnector();
+            GenericConnector connector = new SQLConnector();
             Connection connection = connector.getConnection();
             PreparedStatement pss = connection.prepareStatement("UPDATE pedidos SET fecha = ?, cantidad = ?, producto_id = ?, cliente_dni = ? WHERE id = ?");
             pss.setDate(1, obj.getFecha());
@@ -147,6 +206,13 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
         }
     }
 
+    /**
+     * Elimina un pedido de la base de datos.
+     * Utiliza internamente el método deleteById().
+     * 
+     * @param obj El pedido a eliminar. Debe tener ID válido
+     * @return true si el pedido se eliminó correctamente, false en caso contrario
+     */
     @Override
     public boolean delete(Pedido obj) {
         if (obj == null || obj.getId() <= 0) {
@@ -156,6 +222,14 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
         return deleteById(obj.getId());
     }
 
+    /**
+     * Elimina un pedido de la base de datos por su ID.
+     * 
+     * @param id El ID del pedido a eliminar
+     * @return true si el pedido se eliminó correctamente, false si no se encontró o hubo error
+     * @throws ConnectorException Si hay problemas de conexión a la base de datos
+     * @throws SQLException Si hay errores en la consulta SQL
+     */
     @Override
     public boolean deleteById(Integer id) {
         if (id == null || id <= 0) {
@@ -164,7 +238,7 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
         }
         
         try {
-            MySQLConnector connector = new MySQLConnector();
+            GenericConnector connector = new SQLConnector();
             Connection connection = connector.getConnection();
             PreparedStatement pss = connection.prepareStatement("DELETE FROM pedidos WHERE id = ?");
             pss.setInt(1, id);
@@ -184,10 +258,18 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
         return false;
     }
 
+    /**
+     * Elimina todos los pedidos de la base de datos.
+     * ¡PRECAUCIÓN! Esta operación es irreversible y afectará todas las relaciones.
+     * 
+     * @return true si la operación se completó correctamente, false en caso de error
+     * @throws ConnectorException Si hay problemas de conexión a la base de datos
+     * @throws SQLException Si hay errores en la consulta SQL
+     */
     @Override
     public boolean deleteAll() {
         try {
-            MySQLConnector connector = new MySQLConnector();
+            GenericConnector connector = new SQLConnector();
             Connection connection = connector.getConnection();
             PreparedStatement pss = connection.prepareStatement("DELETE FROM pedidos");
             int affectedRows = pss.executeUpdate();
@@ -204,19 +286,28 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
     // Additional custom methods for Pedido
 
     /**
-     * Check if a pedido exists by ID
+     * Verifica si existe un pedido con el ID especificado.
+     * 
+     * @param id El ID a verificar
+     * @return true si existe un pedido con ese ID, false en caso contrario
      */
     public boolean exists(Integer id) {
         return get(id) != null;
     }
 
     /**
-     * Get pedidos by cliente DNI
+     * Obtiene todos los pedidos asociados a un cliente específico.
+     * Útil para consultar el historial de pedidos de un cliente.
+     * 
+     * @param clienteDni El DNI del cliente cuyos pedidos se quieren obtener
+     * @return Lista de pedidos del cliente con sus relaciones cargadas
+     * @throws ConnectorException Si hay problemas de conexión a la base de datos
+     * @throws SQLException Si hay errores en la consulta SQL
      */
     public List<Pedido> getByClienteDni(String clienteDni) {
         List<Pedido> pedidos = new ArrayList<>();
         try {
-            MySQLConnector connector = new MySQLConnector();
+            GenericConnector connector = new SQLConnector();
             Connection connection = connector.getConnection();
             PreparedStatement pss = connection.prepareStatement("SELECT * FROM pedidos WHERE cliente_dni = ?");
             pss.setString(1, clienteDni);
@@ -246,12 +337,18 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
     }
 
     /**
-     * Get pedidos by producto ID
+     * Obtiene todos los pedidos que contienen un producto específico.
+     * Útil para analizar la demanda de un producto particular.
+     * 
+     * @param productoId El ID del producto cuyos pedidos se quieren obtener
+     * @return Lista de pedidos que contienen el producto con sus relaciones cargadas
+     * @throws ConnectorException Si hay problemas de conexión a la base de datos
+     * @throws SQLException Si hay errores en la consulta SQL
      */
     public List<Pedido> getByProductoId(Integer productoId) {
         List<Pedido> pedidos = new ArrayList<>();
         try {
-            MySQLConnector connector = new MySQLConnector();
+            GenericConnector connector = new SQLConnector();
             Connection connection = connector.getConnection();
             PreparedStatement pss = connection.prepareStatement("SELECT * FROM pedidos WHERE producto_id = ?");
             pss.setInt(1, productoId);
@@ -281,12 +378,16 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
     }
 
     /**
-     * Get the count of all pedidos
+     * Obtiene el número total de pedidos en la base de datos.
+     * 
+     * @return El número total de pedidos, 0 si no hay pedidos o en caso de error
+     * @throws ConnectorException Si hay problemas de conexión a la base de datos
+     * @throws SQLException Si hay errores en la consulta SQL
      */
     public int count() {
         int count = 0;
         try {
-            MySQLConnector connector = new MySQLConnector();
+            SQLConnector connector = new SQLConnector();
             Connection connection = connector.getConnection();
             PreparedStatement pss = connection.prepareStatement("SELECT COUNT(*) FROM pedidos");
             ResultSet rs = pss.executeQuery();
@@ -303,7 +404,13 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
     }
 
     /**
-     * Get count of pedidos by cliente
+     * Obtiene el número de pedidos realizados por un cliente específico.
+     * Útil para estadísticas de actividad del cliente.
+     * 
+     * @param cliente El cliente del cual contar los pedidos
+     * @return El número de pedidos del cliente, 0 si no tiene pedidos, el cliente es null o en caso de error
+     * @throws ConnectorException Si hay problemas de conexión a la base de datos
+     * @throws SQLException Si hay errores en la consulta SQL
      */
     public int countByCliente(Cliente cliente) {
         if (cliente == null || cliente.getDni() == null) {
@@ -312,7 +419,7 @@ public class PedidoDAO implements Dao<Pedido, Integer> {
         
         int count = 0;
         try {
-            MySQLConnector connector = new MySQLConnector();
+            GenericConnector connector = new SQLConnector();
             Connection connection = connector.getConnection();
             PreparedStatement pss = connection.prepareStatement("SELECT COUNT(*) FROM pedidos WHERE cliente_dni = ?");
             pss.setString(1, cliente.getDni());
