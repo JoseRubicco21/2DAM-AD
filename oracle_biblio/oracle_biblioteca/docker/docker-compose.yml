@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # Oracle service (label used to access the service container)
+  oracle:
+    # Docker Hub image (feel free to change the tag "latest" to any other available one)
+    image: gvenzl/oracle-xe:latest
+    # Provide passwords and other environment variables to container
+    environment:
+      - ORACLE_PASSWORD=oracle123
+      - APP_USER=user
+      - APP_USER_PASSWORD=abc123
+    # Forward Oracle port
+    ports:
+      - "1521:1521"
+    # Persist data
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+      - ./scripts:/docker-entrypoint-initdb.d
+    # Container name
+    container_name: oracle_db
+    # Restart policy
+    restart: unless-stopped
+
+  # Adminer - Web-based database management tool
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8080:8080"
+    container_name: adminer_web
+    restart: unless-stopped
+    depends_on:
+      - oracle
+
+volumes:
+  oracle_data:
