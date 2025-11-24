@@ -2,6 +2,7 @@ package com.lembranzas.view;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.util.List;
 
@@ -13,22 +14,77 @@ import com.lembranzas.model.Tarea;
  */
 public class TareaView extends JFrame {
     
+    /**
+     * Controlador asociado a la vista
+     */
     private TareaController controller;
+    /**
+     * Modelo de la tabla de tareas
+     */
     private DefaultTableModel tableModel;
+    /**
+     * Tabla para mostrar las tareas
+     */
     private JTable tablaTareas;
+    /**
+     * Sorter para filtrar las filas de la tabla
+     */
+    private TableRowSorter<DefaultTableModel> rowSorter;
     
-    // Componentes del formulario
+    /**
+     * Componentes del formulario
+     */
     private JTextField txtTitulo;
+    /**
+     *  Descripción de la tarea
+     */
     private JTextArea txtDescripcion;
+    /**
+     * Checkbox para indicar si la tarea está completada
+     */
     private JCheckBox chkCompletada;
+    /**
+     * Botones del formulario
+     */
     private JButton btnAgregar;
+    /**
+     * Botón para actualizar una tarea existente
+     */
     private JButton btnActualizar;
+    /**
+     * Botón para eliminar una tarea existente
+     */
     private JButton btnEliminar;
+    /**
+     * Botón para marcar una tarea como completada
+     */
     private JButton btnMarcarCompletada;
+    /**
+     * Botón para limpiar el formulario
+     */
     private JButton btnLimpiar;
     
+    /**
+     * Campo de texto para filtrar tareas por ID
+     */
+    private JTextField txtFiltroId;
+    /**
+     *  Botón para aplicar el filtro por ID
+     */
+    private JButton btnFiltrar;
+    /**
+     * Botón para limpiar el filtro aplicado
+     */
+    private JButton btnLimpiarFiltro;
+    
+    /**
+     * ID de la tarea actualmente seleccionada en la tabla
+     */
     private int tareaSeleccionadaId = -1;
     
+    /**
+     * Constructor de la vista principal
+     */
     public TareaView() {
         this.controller = new TareaController(this);
         
@@ -39,10 +95,13 @@ public class TareaView extends JFrame {
         
         setTitle("Gestor de Tareas - Lembranzas");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800, 600);
+        setSize(900, 700);
         setLocationRelativeTo(null);
     }
     
+    /**
+     * Inicializa los componentes de la interfaz gráfica
+     */
     private void initComponents() {
         // Inicializar componentes del formulario
         txtTitulo = new JTextField(20);
@@ -58,6 +117,12 @@ public class TareaView extends JFrame {
         btnMarcarCompletada = new JButton("Marcar como Completada");
         btnLimpiar = new JButton("Limpiar");
         
+        // Componentes de filtro
+        txtFiltroId = new JTextField(10);
+        txtFiltroId.setToolTipText("Ingrese ID para filtrar");
+        btnFiltrar = new JButton("Filtrar");
+        btnLimpiarFiltro = new JButton("Mostrar Todo");
+        
         // Tabla
         String[] columnas = {"ID", "Título", "Descripción", "Completada"};
         tableModel = new DefaultTableModel(columnas, 0) {
@@ -69,12 +134,19 @@ public class TareaView extends JFrame {
         tablaTareas = new JTable(tableModel);
         tablaTareas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         
+        // Configurar el sorter para la tabla
+        rowSorter = new TableRowSorter<>(tableModel);
+        tablaTareas.setRowSorter(rowSorter);
+        
         // Inicialmente deshabilitar botones de actualización y eliminación
         btnActualizar.setEnabled(false);
         btnEliminar.setEnabled(false);
         btnMarcarCompletada.setEnabled(false);
     }
     
+    /**
+     *  Configura el diseño de la interfaz gráfica
+     */
     private void setupLayout() {
         setLayout(new BorderLayout());
         
@@ -128,9 +200,21 @@ public class TareaView extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         panelFormulario.add(panelBotones, gbc);
         
+        // Panel de filtro
+        JPanel panelFiltro = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        panelFiltro.setBorder(BorderFactory.createTitledBorder("Filtrar por ID"));
+        panelFiltro.add(new JLabel("ID:"));
+        panelFiltro.add(txtFiltroId);
+        panelFiltro.add(btnFiltrar);
+        panelFiltro.add(btnLimpiarFiltro);
+        
         // Panel de la tabla
         JPanel panelTabla = new JPanel(new BorderLayout());
         panelTabla.setBorder(BorderFactory.createTitledBorder("Lista de Tareas"));
+        
+        // Agregar panel de filtro arriba de la tabla
+        panelTabla.add(panelFiltro, BorderLayout.NORTH);
+        
         JScrollPane scrollTabla = new JScrollPane(tablaTareas);
         panelTabla.add(scrollTabla, BorderLayout.CENTER);
         
@@ -139,13 +223,18 @@ public class TareaView extends JFrame {
         add(panelTabla, BorderLayout.CENTER);
     }
     
+    /**
+     * Configura los listeners de eventos para los componentes
+     */
     private void setupEventListeners() {
         // Listener para selección en la tabla
         tablaTareas.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 int selectedRow = tablaTareas.getSelectedRow();
                 if (selectedRow >= 0) {
-                    int id = (Integer) tableModel.getValueAt(selectedRow, 0);
+                    // Convertir el índice de la vista al índice del modelo
+                    int modelRow = tablaTareas.convertRowIndexToModel(selectedRow);
+                    int id = (Integer) tableModel.getValueAt(modelRow, 0);
                     tareaSeleccionadaId = id;
                     controller.cargarTarea(id);
                     habilitarBotonesEdicion(true);
@@ -191,16 +280,68 @@ public class TareaView extends JFrame {
         
         // Botón Limpiar
         btnLimpiar.addActionListener(e -> limpiarFormulario());
+        
+        // Filtro por ID
+        btnFiltrar.addActionListener(e -> filtrarPorId());
+        
+        // Limpiar filtro
+        btnLimpiarFiltro.addActionListener(e -> limpiarFiltro());
+        
+        // Filtro en tiempo real mientras se escribe
+        txtFiltroId.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                filtrarPorId();
+            }
+        });
+        
+        // Filtro al presionar Enter
+        txtFiltroId.addActionListener(e -> filtrarPorId());
+    }
+    
+    /**
+     * Filtra las filas de la tabla según el ID ingresado en el campo de texto
+     */
+    private void filtrarPorId() {
+        String filtroTexto = txtFiltroId.getText().trim();
+        
+        if (filtroTexto.isEmpty()) {
+            // Si no hay texto, mostrar todas las filas
+            rowSorter.setRowFilter(null);
+        } else {
+            try {
+                // Intentar parsear como número
+                int idBuscado = Integer.parseInt(filtroTexto);
+                // Filtrar solo por ID (columna 0)
+                rowSorter.setRowFilter(RowFilter.numberFilter(RowFilter.ComparisonType.EQUAL, idBuscado, 0));
+            } catch (NumberFormatException e) {
+                // Si no es un número válido, no mostrar nada
+                rowSorter.setRowFilter(RowFilter.regexFilter("^$")); // Filtro que no coincide con nada
+            }
+        }
+    }
+    
+    /**
+     * Limpia el filtro aplicado en la tabla
+     */
+    private void limpiarFiltro() {
+        txtFiltroId.setText("");
+        rowSorter.setRowFilter(null);
     }
     
     // Métodos públicos para que el controlador pueda interactuar con la vista
-    
+    /**
+     * Carga los datos de una tarea en el formulario
+     * @param tarea Tarea cuyos datos se cargarán en el formulario
+     */
     public void cargarDatosEnFormulario(Tarea tarea) {
         txtTitulo.setText(tarea.getTitulo());
         txtDescripcion.setText(tarea.getDescripcion());
         chkCompletada.setSelected(tarea.isCompletada());
     }
     
+    /**
+     * Limpia los campos del formulario y restablece el estado inicial
+     */
     public void limpiarFormulario() {
         txtTitulo.setText("");
         txtDescripcion.setText("");
@@ -210,6 +351,9 @@ public class TareaView extends JFrame {
         habilitarBotonesEdicion(false);
     }
     
+    /**
+     * Actualiza la tabla de tareas con los datos actuales del controlador
+     */
     public void actualizarTabla() {
         tableModel.setRowCount(0);
         List<Tarea> tareas = controller.obtenerTodasLasTareas();
@@ -227,22 +371,46 @@ public class TareaView extends JFrame {
         }
     }
     
+    /**
+     * Muestra un mensaje emergente con la información proporcionada
+     * @param mensaje El mensaje a mostrar
+     * @param titulo  El título del mensaje
+     * @param tipo    El tipo de mensaje (por ejemplo, JOptionPane.INFORMATION_MESSAGE)
+     */
     public void mostrarMensaje(String mensaje, String titulo, int tipo) {
         JOptionPane.showMessageDialog(this, mensaje, titulo, tipo);
     }
     
+    /**
+     * Muestra un cuadro de confirmación con el mensaje y título proporcionados
+     * @param mensaje El mensaje a mostrar en el cuadro de confirmación
+     * @param titulo El título del cuadro de confirmación
+     * @return El valor seleccionado por el usuario (JOptionPane.YES_OPTION o JOptionPane.NO_OPTION)
+     */
     public int mostrarConfirmacion(String mensaje, String titulo) {
         return JOptionPane.showConfirmDialog(this, mensaje, titulo, JOptionPane.YES_NO_OPTION);
     }
     
+    /**
+     * Enfoca el campo de texto del título
+     */
     public void enfocarTitulo() {
         txtTitulo.requestFocus();
     }
     
+    /**
+     * Actualiza el estado del checkbox de completada
+     * @param completada Estado a establecer en el checkbox
+     */
     public void actualizarEstadoCompletada(boolean completada) {
         chkCompletada.setSelected(completada);
     }
     
+
+    /**
+     * Habilita o deshabilita los botones de edición (Actualizar, Eliminar, Marcar como Completada)
+     * @param habilitar Estado para habilitar o deshabilitar los botones
+     */
     private void habilitarBotonesEdicion(boolean habilitar) {
         btnActualizar.setEnabled(habilitar);
         btnEliminar.setEnabled(habilitar);
