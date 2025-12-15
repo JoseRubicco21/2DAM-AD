@@ -5,6 +5,7 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
@@ -24,6 +25,7 @@ public class Monstro {
     @Column(name="vida", nullable=false)
     private int vida;
 
+    @Enumerated
     @Column(name="tipo", nullable=false)
     private TipoMonstro tipo;
 
