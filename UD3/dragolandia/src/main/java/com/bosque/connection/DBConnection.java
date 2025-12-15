@@ -22,6 +22,7 @@ public class DBConnection {
 
     private DBConnection() {
         this.factory = new Configuration().configure().buildSessionFactory();
+        
     }
 
     public <R> R execute(Function<Session, R> operation){

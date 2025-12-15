@@ -1,22 +1,19 @@
 package com.bosque.modelos;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
-@Entity(name="monstros")
-@Table (name="monstros")
-
-public class Monstro {
+@Entity(name="magos")
+@Table (name="magos")
+public class Mago {
     @Id
     @GeneratedValue(strategy=jakarta.persistence.GenerationType.IDENTITY)
-    private int id; 
+    private int id;
 
     @Column(name="nombre", nullable=false, length=100)
     private String nombre;
@@ -24,25 +21,27 @@ public class Monstro {
     @Column(name="vida", nullable=false)
     private int vida;
 
-    @Column(name="tipo", nullable=false)
-    private TipoMonstro tipo;
+    @Column(name="nivel_magia", nullable=false)
+    private int nivelMagia;
 
-    @Column(name="fuerza", nullable=false)
-    private int fuerza;
+    @Column(name="conjuros", nullable=true)
+    private List<Hechizo> conjuros;
 
-    @ManyToMany(mappedBy="monstros")
-    private List<Bosque> bosques = new ArrayList<>();
-
-    public Monstro(int fuerza, int id, String nombre, TipoMonstro tipo, int vida) {
-        this.fuerza = fuerza;
+    public Mago(List<Hechizo> conjuros, int id, int nivelMagia, String nombre, int vida) {
+        this.conjuros = conjuros;
         this.id = id;
+        this.nivelMagia = nivelMagia;
         this.nombre = nombre;
-        this.tipo = tipo;
         this.vida = vida;
     }
+    
 
-    private  void atacar(Mago mago) {
-        
+    public void lanzarHechizo(Hechizo hechizo) {
+
+    }
+    
+    public void lanzarHechizo(Hechizo hechizo, Monstro objetivo) {
+
     }
 
     public int getId() {
@@ -69,20 +68,20 @@ public class Monstro {
         this.vida = vida;
     }
 
-    public TipoMonstro getTipo() {
-        return tipo;
+    public int getNivelMagia() {
+        return nivelMagia;
     }
 
-    public void setTipo(TipoMonstro tipo) {
-        this.tipo = tipo;
+    public void setNivelMagia(int nivelMagia) {
+        this.nivelMagia = nivelMagia;
     }
 
-    public int getFuerza() {
-        return fuerza;
+    public List<Hechizo> getConjuros() {
+        return conjuros;
     }
 
-    public void setFuerza(int fuerza) {
-        this.fuerza = fuerza;
+    public void setConjuros(List<Hechizo> conjuros) {
+        this.conjuros = conjuros;
     }
 
     @Override
@@ -92,8 +91,8 @@ public class Monstro {
         result = prime * result + id;
         result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
         result = prime * result + vida;
-        result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
-        result = prime * result + fuerza;
+        result = prime * result + nivelMagia;
+        result = prime * result + ((conjuros == null) ? 0 : conjuros.hashCode());
         return result;
     }
 
@@ -105,7 +104,7 @@ public class Monstro {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Monstro other = (Monstro) obj;
+        Mago other = (Mago) obj;
         if (id != other.id)
             return false;
         if (nombre == null) {
@@ -115,22 +114,19 @@ public class Monstro {
             return false;
         if (vida != other.vida)
             return false;
-        if (tipo != other.tipo)
+        if (nivelMagia != other.nivelMagia)
             return false;
-        if (fuerza != other.fuerza)
+        if (conjuros == null) {
+            if (other.conjuros != null)
+                return false;
+        } else if (!conjuros.equals(other.conjuros))
             return false;
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "Monstro [id=" + id + ", nombre=" + nombre + ", vida=" + vida + ", tipo=" + tipo + ", fuerza=" + fuerza
-                + "]";
+
+    public Mago() {
     }
 
-    public Monstro() {
-    }
-
-    
     
 }

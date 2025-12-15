@@ -1,7 +1,17 @@
 package com.bosque;
 
+import com.bosque.connection.DBConnection;
+import com.bosque.modelos.Monstro;
+import com.bosque.modelos.TipoMonstro;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Welcome to Bosque!");
+     DBConnection db = DBConnection.getInstance();
+     Monstro monstro = new Monstro(10, 2, "Pepe", TipoMonstro.TROLL, 300);
+
+     db.execute(session -> {
+        session.persist(monstro);
+        return null;
+     });
     }
 }

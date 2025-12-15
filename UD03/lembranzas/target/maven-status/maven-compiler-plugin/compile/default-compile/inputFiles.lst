@@ -1,0 +1,8 @@
+/home/sanclemente.local/a23joserf/Documentos/repos/AD/UD03/lembranzas/src/main/java/com/lembranzas/Main.java
+/home/sanclemente.local/a23joserf/Documentos/repos/AD/UD03/lembranzas/src/main/java/com/lembranzas/controller/TareaController.java
+/home/sanclemente.local/a23joserf/Documentos/repos/AD/UD03/lembranzas/src/main/java/com/lembranzas/model/Tarea.java
+/home/sanclemente.local/a23joserf/Documentos/repos/AD/UD03/lembranzas/src/main/java/com/lembranzas/services/TareaRepository.java
+/home/sanclemente.local/a23joserf/Documentos/repos/AD/UD03/lembranzas/src/main/java/com/lembranzas/services/repository/exceptions/TareaNotFoundException.java
+/home/sanclemente.local/a23joserf/Documentos/repos/AD/UD03/lembranzas/src/main/java/com/lembranzas/services/repository/interfaces/Respository.java
+/home/sanclemente.local/a23joserf/Documentos/repos/AD/UD03/lembranzas/src/main/java/com/lembranzas/services/seeders/TareaSeeder.java
+/home/sanclemente.local/a23joserf/Documentos/repos/AD/UD03/lembranzas/src/main/java/com/lembranzas/view/TareaView.java

@@ -19,7 +19,10 @@
 -->
 <property name="hibernate.current_session_context_class">thread</property>
 <!-- Registrar entidades -->
-<mapping class="com.example.Libro"/>
-<mapping class="com.example.Usuario"/>
+<mapping class="com.bosque.modelos.Bosque"/>
+<mapping class="com.bosque.modelos.Dragon"/>
+<mapping class="com.bosque.modelos.Hechizo"/>
+<mapping class="com.bosque.modelos.Mago"/>
+<mapping class="com.bosque.modelos.Monstro"/>
 </session-factory>
 </hibernate-configuration>
