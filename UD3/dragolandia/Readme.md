@@ -8,6 +8,7 @@ El análsis de dragolandia
 
 ## Diseño
 ### Diagrama de Entidad relación
+```mermaid
 erDiagram
     MAGOS {
         int id PK
@@ -51,9 +52,10 @@ erDiagram
     BOSQUES ||--o{ BOSQUES_MONSTROS : ""
     MONSTROS ||--o{ BOSQUES_MONSTROS : ""
     BOSQUES }o--|| MONSTROS : "monstroJefe"
-
+```
 ### Diagrama de clase
 
+```mermaid
 classDiagram
     class Mago {
         int id
@@ -96,4 +98,4 @@ classDiagram
     Bosque "many" -- "many" Monstro : monstros
     Hechizo o-- TipoHechizo
     Monstro o-- TipoMonstro
-
+```
