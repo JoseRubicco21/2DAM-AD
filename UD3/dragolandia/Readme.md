@@ -90,10 +90,19 @@ classDiagram
         int intensidadFuego
         int resistencia
     }
-    class TipoHechizo
-    class TipoMonstro
+    class TipoHechizo {
+        <<enum>>
+        BOLA_DE_FUEGO
+        RAYO_CONGELANTE
+        TORMENTA_ELECTRICA
+    }
+    class TipoMonstro {
+        <<enum>>
+        OGRO
+        TROLL
+        ESPECTRO
+    }
 
-    Mago "many" -- "many" Hechizo : conjuros
     Bosque "1" -- "0..1" Monstro : monstroJefe
     Bosque "many" -- "many" Monstro : monstros
     Hechizo o-- TipoHechizo
