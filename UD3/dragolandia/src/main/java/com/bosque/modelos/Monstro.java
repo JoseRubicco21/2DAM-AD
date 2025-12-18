@@ -5,18 +5,19 @@ import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-
 @Entity(name="monstros")
 @Table (name="monstros")
 
 public class Monstro {
     @Id
-    @GeneratedValue(strategy=jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id; 
 
     @Column(name="nombre", nullable=false, length=100)
@@ -25,8 +26,8 @@ public class Monstro {
     @Column(name="vida", nullable=false)
     private int vida;
 
-    @Enumerated
     @Column(name="tipo", nullable=false)
+    @Enumerated(EnumType.STRING)
     private TipoMonstro tipo;
 
     @Column(name="fuerza", nullable=false)
@@ -35,9 +36,8 @@ public class Monstro {
     @ManyToMany(mappedBy="monstros")
     private List<Bosque> bosques = new ArrayList<>();
 
-    public Monstro(int fuerza, int id, String nombre, TipoMonstro tipo, int vida) {
+    public Monstro(int fuerza, String nombre, TipoMonstro tipo, int vida) {
         this.fuerza = fuerza;
-        this.id = id;
         this.nombre = nombre;
         this.tipo = tipo;
         this.vida = vida;

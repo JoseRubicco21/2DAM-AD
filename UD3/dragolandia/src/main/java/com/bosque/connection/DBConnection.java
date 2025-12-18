@@ -1,5 +1,6 @@
 package com.bosque.connection;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import org.hibernate.Session;
@@ -40,16 +41,14 @@ public class DBConnection {
         }
     }
 
-    public void executeVoid(Function<Session, Void> operation){
+    public void executeTx(Consumer<Session> operation) {
         Transaction transaction = null;
-        try(Session session = this.factory.openSession()){
+        try (Session session = this.factory.openSession()) {
             transaction = session.beginTransaction();
-            operation.apply(session);
+            operation.accept(session);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
+            if (transaction != null) transaction.rollback();
             throw e;
         }
     }

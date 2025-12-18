@@ -6,6 +6,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity(name="magos")
@@ -24,7 +27,12 @@ public class Mago {
     @Column(name="nivel_magia", nullable=false)
     private int nivelMagia;
 
-    @Column(name="conjuros", nullable=true)
+    @ManyToMany
+    @JoinTable(
+        name = "magos_hechizos",
+        joinColumns = @JoinColumn(name = "mago_id"),
+        inverseJoinColumns = @JoinColumn(name = "hechizo_id")
+    )
     private List<Hechizo> conjuros;
 
     public Mago(List<Hechizo> conjuros, int id, int nivelMagia, String nombre, int vida) {

@@ -2,6 +2,7 @@ package com.bosque.modelos;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -15,8 +16,8 @@ public class Hechizo {
     @GeneratedValue(strategy=jakarta.persistence.GenerationType.IDENTITY)
     private int id;
 
-    @Enumerated
     @Column(name="nombre", nullable=false)
+    @Enumerated(EnumType.STRING)
     private TipoHechizo nombre;
 
     @Column(name="descripcion", nullable=true, length=250)

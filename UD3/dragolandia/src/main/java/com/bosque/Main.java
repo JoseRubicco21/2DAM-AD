@@ -6,12 +6,12 @@ import com.bosque.modelos.TipoMonstro;
 
 public class Main {
     public static void main(String[] args) {
-     DBConnection db = DBConnection.getInstance();
-     Monstro monstro = new Monstro(10, 2, "Pepe", TipoMonstro.TROLL, 300);
+        DBConnection db = DBConnection.getInstance();
+        Monstro monstro = new Monstro(10, "Pepe", TipoMonstro.TROLL, 300);
 
-     db.execute(session -> {
-        session.persist(monstro);
-        return null;
-     });
+        db.execute(s -> {
+            s.persist(monstro);
+            return null;
+        });
     }
 }
