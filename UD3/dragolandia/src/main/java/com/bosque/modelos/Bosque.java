@@ -11,6 +11,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity(name="bosques")
@@ -26,6 +27,9 @@ public class Bosque {
 
     @ManyToOne
     private Monstro monstroJefe;
+
+    @OneToOne(mappedBy="bosque")
+    private Dragon dragon;
 
     @ManyToMany
     @JoinTable(name="bosques_monstros",
@@ -65,6 +69,15 @@ public class Bosque {
     public Bosque() {
     }
     
+    public Bosque(String nombre, Monstro monstroJefe) {
+        this.nombre = nombre;
+        this.monstroJefe = monstroJefe;
+    }
+
+    public Bosque(String nombre) {
+        this.nombre = nombre;
+    }
+
     @Override
     public boolean equals(Object obj) {
         // TODO Auto-generated method stub

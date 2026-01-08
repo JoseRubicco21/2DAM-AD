@@ -1,10 +1,13 @@
 package com.bosque.modelos;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity(name="dragones")
@@ -20,6 +23,10 @@ public class Dragon {
     @Column(name="resistencia", nullable=false)
     private int resistencia;
 
+    @OneToOne(cascade= CascadeType.ALL)
+    @JoinColumn(name="bosque_id", referencedColumnName="id")
+    private Bosque bosque;
+
     public Dragon(int intensidadFuego, String nombre, int resistencia) {
         this.intensidadFuego = intensidadFuego;
         this.nombre = nombre;
@@ -27,7 +34,7 @@ public class Dragon {
     }
 
     public void exahalarFuego(Monstro monstro) {
-        
+        monstro.setVida(monstro.getVida() - this.intensidadFuego);
     }
 
     public String getNombre() {

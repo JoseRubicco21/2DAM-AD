@@ -1,17 +1,54 @@
 package com.bosque;
 
-import com.bosque.connection.DBConnection;
+import java.util.List;
+
+import com.bosque.controlador.BosqueDAO;
+import com.bosque.controlador.DragonDAO;
+import com.bosque.controlador.HechizoDAO;
+import com.bosque.controlador.MagoDAO;
+import com.bosque.controlador.MonstroDAO;
+import com.bosque.modelos.Bosque;
+import com.bosque.modelos.Dragon;
+import com.bosque.modelos.Hechizo;
+import com.bosque.modelos.Mago;
 import com.bosque.modelos.Monstro;
+import com.bosque.modelos.TipoHechizo;
 import com.bosque.modelos.TipoMonstro;
 
 public class Main {
     public static void main(String[] args) {
-        DBConnection db = DBConnection.getInstance();
-        Monstro monstro = new Monstro(10, "Pepe", TipoMonstro.TROLL, 300);
+        Monstro m1 = new Monstro(50, "Gorgo", TipoMonstro.OGRO, 10);
+        Monstro m2 = new Monstro(30, "Trolly", TipoMonstro.TROLL, 15);
+        Monstro m3 = new Monstro(20, "Fantasmin", TipoMonstro.ESPECTRO, 10);
+        Bosque b1 = new Bosque("Bosque Tenebroso", m3);
+        Dragon d1 = new Dragon(40, "Draco", 300);
+        Hechizo h1 = new Hechizo(TipoHechizo.BOLA_DE_FUEGO, "Una bola de fuego", 1000);
+        Hechizo h2 = new Hechizo(TipoHechizo.RAYO_CONGELANTE, "Un rayo congelante", 1000);
+        Hechizo h3 = new Hechizo(TipoHechizo.TORMENTA_ELECTRICA, "Una tormenta electrica", 1000);
+        Mago mago1 = new Mago(List.of(h1, h2), 1, 75, "Gandalf", 250);
+        Mago mago2 = new Mago(List.of(h2, h3), 2, 50, "Merlin", 200);
 
-        db.execute(s -> {
-            s.persist(monstro);
-            return null;
-        });
+        // Initialize DAOs and save entities on init.
+        DragonDAO dragonDAO = new DragonDAO();
+        BosqueDAO bosqueDAO = new BosqueDAO();
+        HechizoDAO hechizoDAO = new HechizoDAO();
+        MagoDAO magoDAO = new MagoDAO();
+        MonstroDAO monstroDAO = new MonstroDAO();
+
+        monstroDAO.save(m1);
+        monstroDAO.save(m2);
+        monstroDAO.save(m3);
+        bosqueDAO.save(b1);
+        dragonDAO.save(d1);
+        hechizoDAO.save(h1);
+        hechizoDAO.save(h2);
+        hechizoDAO.save(h3);
+        magoDAO.save(mago1);
+        magoDAO.save(mago2);
+
+        // Main app logic:
+
+
+
     }
 }

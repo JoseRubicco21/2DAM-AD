@@ -5,6 +5,7 @@ import java.util.List;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -15,7 +16,7 @@ import jakarta.persistence.Table;
 @Table (name="magos")
 public class Mago {
     @Id
-    @GeneratedValue(strategy=jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
     @Column(name="nombre", nullable=false, length=100)
@@ -49,7 +50,31 @@ public class Mago {
     }
     
     public void lanzarHechizo(Hechizo hechizo, Monstro objetivo) {
+        // This is not a good pattern and it is not good architecture but i do not care anymore.
+        switch (hechizo.getId()) {
+            case 1:
+                // Bola de fuego
+                objetivo.setVida(objetivo.getVida() - this.nivelMagia);
+                break;
+            case 2:
+                // rayo
+                objetivo.setVida(1);
+                break;
+            case 3:
+                // Bola de nieve
+                objetivo.setVida(0);
+                break;
+            case 4:
+                // Absolutely nothing
+                objetivo.setVida(objetivo.getVida());
+                break;
+            default:
+                break;
+        }
+    }
 
+    public void lanzarHechizo(Monstro monster){
+        monster.setVida(monster.getVida() - this.nivelMagia);
     }
 
     public int getId() {

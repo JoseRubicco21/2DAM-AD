@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -13,7 +14,7 @@ import jakarta.persistence.Table;
 public class Hechizo {
    
     @Id
-    @GeneratedValue(strategy=jakarta.persistence.GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
     @Column(name="nombre", nullable=false)
@@ -23,8 +24,9 @@ public class Hechizo {
     @Column(name="descripcion", nullable=true, length=250)
     private String descripcion;
     
-    public void efecto(Monstro objetivo) {
-    }
+    @Column(name="danio", nullable=false)
+    private int danio;
+
     public int getId() {
         return id;
     }
@@ -59,6 +61,11 @@ public class Hechizo {
         if (nombre != other.nombre)
             return false;
         return true;
+    }
+    public Hechizo(TipoHechizo nombre, String descripcion, int danio) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.danio = danio;
     }
     public Hechizo(int id, TipoHechizo nombre) {
         this.id = id;

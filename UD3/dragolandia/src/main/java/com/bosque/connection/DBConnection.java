@@ -26,6 +26,10 @@ public class DBConnection {
         
     }
 
+    public SessionFactory getFactory() {
+        return this.factory;
+    }
+
     public <R> R execute(Function<Session, R> operation){
         Transaction transaction = null;
         try(Session session = this.factory.openSession()){
