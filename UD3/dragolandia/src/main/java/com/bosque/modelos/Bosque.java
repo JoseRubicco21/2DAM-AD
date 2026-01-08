@@ -88,6 +88,19 @@ public class Bosque {
         // TODO Auto-generated method stub
         return super.hashCode();
     }
+    public Dragon getDragon() {
+        return dragon;
+    }
+    public void setDragon(Dragon dragon) {
+        this.dragon = dragon;
+    }
+    public List<Monstro> getMonstros() {
+        return monstros;
+    }
+    public void setMonstros(List<Monstro> monstros) {
+        this.monstros = monstros;
+    }
 
+    
     
 }

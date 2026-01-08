@@ -66,7 +66,7 @@ public class BosqueDAO implements DAO<Bosque> {
     public List<Bosque> getAll() {
         DBConnection  dbConnection = DBConnection.getInstance();
         try(var session = dbConnection.getFactory().openSession()){
-            return session.createQuery("SELECT * FROM Bosque", Bosque.class).getResultList();
+            return session.createQuery("SELECT b FROM bosques b", Bosque.class).getResultList();
         } catch (Exception e) {
             System.out.println("Error al obtener los bosques: " + e.getMessage());
             return null;

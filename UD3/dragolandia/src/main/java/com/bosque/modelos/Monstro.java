@@ -43,8 +43,8 @@ public class Monstro {
         this.vida = vida;
     }
 
-    private  void atacar(Mago mago) {
-        
+    public void atacar(Mago mago) {
+        mago.setVida(mago.getVida() - this.fuerza);
     }
 
     public int getId() {

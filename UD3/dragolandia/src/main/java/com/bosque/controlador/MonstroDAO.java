@@ -66,7 +66,7 @@ public class MonstroDAO implements DAO<Monstro> {
     public List<Monstro> getAll() {
         DBConnection dbConnection = DBConnection.getInstance();
         try(Session session = dbConnection.getFactory().openSession()){
-            return session.createQuery("SELECT * FROM Monstro", Monstro.class).getResultList();
+            return session.createQuery("SELECT m FROM monstruos m", Monstro.class).getResultList();
         } catch (Exception e) {
             System.out.println("Error al obtener los monstruos: " + e.getMessage());
             return null;

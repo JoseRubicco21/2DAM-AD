@@ -66,7 +66,7 @@ public class HechizoDAO implements  DAO<Hechizo> {
     public List<Hechizo> getAll() {
         DBConnection dbConnection = DBConnection.getInstance();
         try(Session session = dbConnection.getFactory().openSession()){
-            return session.createQuery("SELECT * FROM Hechizo", Hechizo.class).getResultList();
+            return session.createQuery("SELECT h FROM hechizos h", Hechizo.class).getResultList();
         } catch (Exception e) {
             System.out.println("Error al obtener los hechizos: " + e.getMessage());
             return null;

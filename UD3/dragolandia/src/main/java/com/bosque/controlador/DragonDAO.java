@@ -68,7 +68,7 @@ public class DragonDAO implements DAO<Dragon> {
     public List<Dragon> getAll() {
         DBConnection dbConnection = DBConnection.getInstance();
         try(Session session = dbConnection.getFactory().openSession()){
-            return session.createQuery("SELECT * FROM Dragon", Dragon.class).getResultList();
+            return session.createQuery("SELECT d FROM dragones d", Dragon.class).getResultList();
         } catch (Exception e) {
             System.out.println("Error al obtener los dragones: " + e.getMessage());
             return null;

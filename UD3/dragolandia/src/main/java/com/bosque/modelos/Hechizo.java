@@ -73,5 +73,10 @@ public class Hechizo {
     }
     public Hechizo() {
     }
+    @Override
+    public String toString() {
+        return "Hechizo [id=" + id + ", nombre=" + nombre + ", descripcion=" + descripcion + ", danio=" + danio + "]";
+    }
+    
     
 }

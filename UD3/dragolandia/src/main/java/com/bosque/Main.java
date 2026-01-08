@@ -16,7 +16,8 @@ import com.bosque.modelos.TipoHechizo;
 import com.bosque.modelos.TipoMonstro;
 
 public class Main {
-    public static void main(String[] args) {
+
+    public static void init() {
         Monstro m1 = new Monstro(50, "Gorgo", TipoMonstro.OGRO, 10);
         Monstro m2 = new Monstro(30, "Trolly", TipoMonstro.TROLL, 15);
         Monstro m3 = new Monstro(20, "Fantasmin", TipoMonstro.ESPECTRO, 10);
@@ -46,7 +47,41 @@ public class Main {
         magoDAO.save(mago1);
         magoDAO.save(mago2);
 
-        // Main app logic:
+    }
+
+    public static void main(String[] args) {
+        // Populate database with base values
+        boolean baseValues = false;
+        if (baseValues) {
+            init();
+        }
+       // Initialize DAOs and save entities on init.
+        DragonDAO dragonDAO = new DragonDAO();
+        BosqueDAO bosqueDAO = new BosqueDAO();
+        HechizoDAO hechizoDAO = new HechizoDAO();
+        MagoDAO magoDAO = new MagoDAO();
+        MonstroDAO monstroDAO = new MonstroDAO();
+        
+        List<Mago> magos = magoDAO.getAll();
+        //List<Monstro> monstros = monstroDAO.getAll();
+        //Dragon dragon = dragonDAO.getById(1);
+
+
+        // Game loop is not well defined. I'm not willing to design a full game here.
+        //magos.get(0).lanzarHechizo(hechizoDAO.getById(1), monstros.get(0));
+        //monstros.get(1).atacar(magos.get(0));
+        //dragon.exahalarFuego(monstros.get(1));
+        //dragon.exahalarFuego(monstros.get(2));
+        //
+        //magoDAO.update(magos.get(0));
+        //monstroDAO.update(monstros.get(0));
+        //monstroDAO.update(monstros.get(1));
+        //monstroDAO.update(monstros.get(2));
+        //dragonDAO.update(dragon);
+
+        magos.forEach(m -> System.out.println(m));
+        //monstros.forEach(System.out::println);
+        //System.out.println(dragon);
 
 
 

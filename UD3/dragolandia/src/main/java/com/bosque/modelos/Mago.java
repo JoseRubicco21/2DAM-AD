@@ -64,11 +64,8 @@ public class Mago {
                 // Bola de nieve
                 objetivo.setVida(0);
                 break;
-            case 4:
-                // Absolutely nothing
-                objetivo.setVida(objetivo.getVida());
-                break;
             default:
+                this.setVida(this.getVida() - 1);
                 break;
         }
     }
@@ -159,6 +156,19 @@ public class Mago {
 
 
     public Mago() {
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Mago{");
+        sb.append("id=").append(id);
+        sb.append(", nombre=").append(nombre);
+        sb.append(", vida=").append(vida);
+        sb.append(", nivelMagia=").append(nivelMagia);
+        sb.append(", conjuros=").append(conjuros);
+        sb.append('}');
+        return sb.toString();
     }
 
     
