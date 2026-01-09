@@ -66,7 +66,7 @@ public class MagoDAO implements DAO<Mago> {
     public List<Mago> getAll() {
         DBConnection dbConnection = DBConnection.getInstance();
         try(Session session = dbConnection.getFactory().openSession()){
-            return session.createQuery("SELECT m FROM magos m", Mago.class).getResultList();
+            return session.createQuery("SELECT DISTINCT m FROM magos m LEFT JOIN FETCH m.conjuros", Mago.class).getResultList();
         } catch (Exception e) {
             System.out.println("Error al obtener los magos: " + e.getMessage());
             return null;

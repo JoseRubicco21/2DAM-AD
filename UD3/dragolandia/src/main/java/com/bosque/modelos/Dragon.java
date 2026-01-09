@@ -14,7 +14,10 @@ import jakarta.persistence.Table;
 @Table (name="dragones")
 public class Dragon {
     @Id
-    @GeneratedValue(strategy=GenerationType.UUID)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int id;
+
+    @Column(name="nombre", nullable=false, length=100)
     private String nombre;
 
     @Column(name="intensidad_fuego", nullable=false)
@@ -101,5 +104,12 @@ public class Dragon {
     public Dragon() {
     }
 
+    @Override
+    public String toString() {
+        return "Dragon [id=" + id + ", nombre=" + nombre + ", intensidadFuego=" + intensidadFuego + ", resistencia="
+                + resistencia + ", bosque=" + bosque + "]";
+    }
+
+    
     
 }

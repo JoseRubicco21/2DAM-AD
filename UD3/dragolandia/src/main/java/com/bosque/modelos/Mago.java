@@ -43,6 +43,13 @@ public class Mago {
         this.nombre = nombre;
         this.vida = vida;
     }
+
+    public Mago(List<Hechizo> conjuros, int nivelMagia, String nombre, int vida) {
+        this.conjuros = conjuros;
+        this.nivelMagia = nivelMagia;
+        this.nombre = nombre;
+        this.vida = vida;
+    }
     
 
     public void lanzarHechizo(Hechizo hechizo) {
@@ -96,6 +103,9 @@ public class Mago {
 
     public void setVida(int vida) {
         this.vida = vida;
+        if (this.vida < 0) {
+            this.vida = 0;
+        }
     }
 
     public int getNivelMagia() {

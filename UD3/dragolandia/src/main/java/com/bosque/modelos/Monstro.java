@@ -69,6 +69,9 @@ public class Monstro {
 
     public void setVida(int vida) {
         this.vida = vida;
+        if (this.vida < 0) {
+            this.vida = 0;
+        }
     }
 
     public TipoMonstro getTipo() {

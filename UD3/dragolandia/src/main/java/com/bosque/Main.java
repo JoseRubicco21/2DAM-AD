@@ -26,8 +26,8 @@ public class Main {
         Hechizo h1 = new Hechizo(TipoHechizo.BOLA_DE_FUEGO, "Una bola de fuego", 1000);
         Hechizo h2 = new Hechizo(TipoHechizo.RAYO_CONGELANTE, "Un rayo congelante", 1000);
         Hechizo h3 = new Hechizo(TipoHechizo.TORMENTA_ELECTRICA, "Una tormenta electrica", 1000);
-        Mago mago1 = new Mago(List.of(h1, h2), 1, 75, "Gandalf", 250);
-        Mago mago2 = new Mago(List.of(h2, h3), 2, 50, "Merlin", 200);
+        Mago mago1 = new Mago(List.of(h1, h2),     75, "Gandalf", 250);
+        Mago mago2 = new Mago(List.of(h2, h3), 50, "Merlin", 200);
 
         // Initialize DAOs and save entities on init.
         DragonDAO dragonDAO = new DragonDAO();
@@ -39,8 +39,8 @@ public class Main {
         monstroDAO.save(m1);
         monstroDAO.save(m2);
         monstroDAO.save(m3);
-        bosqueDAO.save(b1);
         dragonDAO.save(d1);
+        bosqueDAO.save(b1);
         hechizoDAO.save(h1);
         hechizoDAO.save(h2);
         hechizoDAO.save(h3);
@@ -51,10 +51,7 @@ public class Main {
 
     public static void main(String[] args) {
         // Populate database with base values
-        boolean baseValues = false;
-        if (baseValues) {
-            init();
-        }
+        init();
        // Initialize DAOs and save entities on init.
         DragonDAO dragonDAO = new DragonDAO();
         BosqueDAO bosqueDAO = new BosqueDAO();
@@ -63,25 +60,25 @@ public class Main {
         MonstroDAO monstroDAO = new MonstroDAO();
         
         List<Mago> magos = magoDAO.getAll();
-        //List<Monstro> monstros = monstroDAO.getAll();
-        //Dragon dragon = dragonDAO.getById(1);
+        List<Monstro> monstros = monstroDAO.getAll();
+        Dragon dragon = dragonDAO.getById(1);
 
 
         // Game loop is not well defined. I'm not willing to design a full game here.
-        //magos.get(0).lanzarHechizo(hechizoDAO.getById(1), monstros.get(0));
-        //monstros.get(1).atacar(magos.get(0));
-        //dragon.exahalarFuego(monstros.get(1));
-        //dragon.exahalarFuego(monstros.get(2));
-        //
-        //magoDAO.update(magos.get(0));
-        //monstroDAO.update(monstros.get(0));
-        //monstroDAO.update(monstros.get(1));
-        //monstroDAO.update(monstros.get(2));
-        //dragonDAO.update(dragon);
+        magos.get(0).lanzarHechizo(hechizoDAO.getById(1), monstros.get(0));
+        monstros.get(1).atacar(magos.get(0));
+        dragon.exahalarFuego(monstros.get(1));
+        dragon.exahalarFuego(monstros.get(2));
+        
+        magoDAO.update(magos.get(0));
+        monstroDAO.update(monstros.get(0));
+        monstroDAO.update(monstros.get(1));
+        monstroDAO.update(monstros.get(2));
+        dragonDAO.update(dragon);
 
         magos.forEach(m -> System.out.println(m));
-        //monstros.forEach(System.out::println);
-        //System.out.println(dragon);
+        monstros.forEach(System.out::println);
+        System.out.println(dragon);
 
 
 
