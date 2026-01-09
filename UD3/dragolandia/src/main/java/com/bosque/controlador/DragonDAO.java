@@ -2,10 +2,10 @@ package com.bosque.controlador;
 
 import java.util.List;
 
-import org.hibernate.Session;
-
 import com.bosque.connection.DBConnection;
 import com.bosque.modelos.Dragon;
+
+import jakarta.persistence.EntityManager;
 
 public class DragonDAO implements DAO<Dragon> {
 
@@ -14,7 +14,7 @@ public class DragonDAO implements DAO<Dragon> {
     @Override
     public Dragon getById(int id) {
         DBConnection dbConnection = DBConnection.getInstance();
-        try(Session session = dbConnection.getFactory().openSession()){
+        try(EntityManager session = dbConnection.getFactory().createEntityManager()){
             return session.find(Dragon.class, id);
         } catch (Exception e) {
             System.out.println("Error al obtener el dragon con id " + id + ": " +
@@ -26,8 +26,8 @@ public class DragonDAO implements DAO<Dragon> {
     @Override
     public void save(Dragon entity) {
         DBConnection dbConnection = DBConnection.getInstance();
-        try(Session session = dbConnection.getFactory().openSession()){
-            session.beginTransaction();
+        try(EntityManager session = dbConnection.getFactory().createEntityManager()){
+            session.getTransaction().begin();
             session.persist(entity);
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -38,8 +38,8 @@ public class DragonDAO implements DAO<Dragon> {
     @Override
     public void update(Dragon entity) {
         DBConnection dbConnection = DBConnection.getInstance();
-        try(Session session = dbConnection.getFactory().openSession()){
-            session.beginTransaction();
+        try(EntityManager session = dbConnection.getFactory().createEntityManager()){
+            session.getTransaction().begin();
             session.merge(entity);
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -50,10 +50,10 @@ public class DragonDAO implements DAO<Dragon> {
     @Override
     public void delete(int id) {
         DBConnection dbConnection = DBConnection.getInstance();
-        try(Session session = dbConnection.getFactory().openSession()){
+        try(EntityManager session = dbConnection.getFactory().createEntityManager()){
             Dragon dragon = session.find(Dragon.class, id);
             if(dragon != null){
-                session.beginTransaction();
+                session.getTransaction().begin();
                 session.remove(dragon);
                 session.getTransaction().commit();
             } else {
@@ -67,7 +67,7 @@ public class DragonDAO implements DAO<Dragon> {
     @Override
     public List<Dragon> getAll() {
         DBConnection dbConnection = DBConnection.getInstance();
-        try(Session session = dbConnection.getFactory().openSession()){
+        try(EntityManager session = dbConnection.getFactory().createEntityManager()){
             return session.createQuery("SELECT d FROM dragones d", Dragon.class).getResultList();
         } catch (Exception e) {
             System.out.println("Error al obtener los dragones: " + e.getMessage());

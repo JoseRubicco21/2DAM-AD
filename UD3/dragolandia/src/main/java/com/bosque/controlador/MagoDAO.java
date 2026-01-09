@@ -2,10 +2,10 @@ package com.bosque.controlador;
 
 import java.util.List;
 
-import org.hibernate.Session;
-
 import com.bosque.connection.DBConnection;
 import com.bosque.modelos.Mago;
+
+import jakarta.persistence.EntityManager;
 
 public class MagoDAO implements DAO<Mago> {
 
@@ -13,7 +13,7 @@ public class MagoDAO implements DAO<Mago> {
     @Override
     public Mago getById(int id) {
         DBConnection dbConnection = DBConnection.getInstance();
-        try(Session session = dbConnection.getFactory().openSession()){
+        try(EntityManager session = dbConnection.getFactory().createEntityManager()){
             return session.find(Mago.class, id);
         } catch (Exception e) {
             System.out.println("Error al obtener el mago con id " + id + ": " + e.getMessage());
@@ -24,8 +24,8 @@ public class MagoDAO implements DAO<Mago> {
     @Override
     public void save(Mago entity) {
         DBConnection dbConnection = DBConnection.getInstance();
-        try(Session session = dbConnection.getFactory().openSession()){
-            session.beginTransaction();
+        try(EntityManager session = dbConnection.getFactory().createEntityManager()){
+            session.getTransaction().begin();
             session.persist(entity);    
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -36,8 +36,8 @@ public class MagoDAO implements DAO<Mago> {
     @Override
     public void update(Mago entity) {
         DBConnection dbConnection = DBConnection.getInstance();
-        try(Session session = dbConnection.getFactory().openSession()){
-            session.beginTransaction();
+        try(EntityManager session = dbConnection.getFactory().createEntityManager()){
+            session.getTransaction().begin();
             session.merge(entity);
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -48,10 +48,10 @@ public class MagoDAO implements DAO<Mago> {
     @Override
     public void delete(int id) {
         DBConnection dbConnection = DBConnection.getInstance();
-        try(Session session = dbConnection.getFactory().openSession()){
+        try(EntityManager session = dbConnection.getFactory().createEntityManager()){
             Mago mago = session.find(Mago.class, id);
             if(mago != null){
-                session.beginTransaction();
+                session.getTransaction().begin();
                 session.remove(mago);
                 session.getTransaction().commit();
             } else {
@@ -65,7 +65,7 @@ public class MagoDAO implements DAO<Mago> {
     @Override
     public List<Mago> getAll() {
         DBConnection dbConnection = DBConnection.getInstance();
-        try(Session session = dbConnection.getFactory().openSession()){
+        try(EntityManager session = dbConnection.getFactory().createEntityManager()){
             return session.createQuery("SELECT DISTINCT m FROM magos m LEFT JOIN FETCH m.conjuros", Mago.class).getResultList();
         } catch (Exception e) {
             System.out.println("Error al obtener los magos: " + e.getMessage());

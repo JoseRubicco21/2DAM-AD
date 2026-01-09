@@ -47,7 +47,15 @@ public class Main {
         magoDAO.save(mago1);
         magoDAO.save(mago2);
 
+
     }
+
+    public static boolean gameState(List<Mago> magos, List<Monstro> monstros) {
+        boolean magosVivos = magos.stream().anyMatch(m -> m.getVida() > 0);
+        boolean monstrosVivos = monstros.stream().anyMatch(m -> m.getVida() > 0);
+        return magosVivos && monstrosVivos;
+    }
+
 
     public static void main(String[] args) {
         // Populate database with base values
@@ -65,21 +73,22 @@ public class Main {
 
 
         // Game loop is not well defined. I'm not willing to design a full game here.
-        magos.get(0).lanzarHechizo(hechizoDAO.getById(1), monstros.get(0));
-        monstros.get(1).atacar(magos.get(0));
-        dragon.exahalarFuego(monstros.get(1));
-        dragon.exahalarFuego(monstros.get(2));
-        
-        magoDAO.update(magos.get(0));
-        monstroDAO.update(monstros.get(0));
-        monstroDAO.update(monstros.get(1));
-        monstroDAO.update(monstros.get(2));
-        dragonDAO.update(dragon);
-
-        magos.forEach(m -> System.out.println(m));
-        monstros.forEach(System.out::println);
-        System.out.println(dragon);
-
+        while(gameState(magos, monstros)){
+            magos.get(0).lanzarHechizo(hechizoDAO.getById(1), monstros.get(0));
+            monstros.get(1).atacar(magos.get(0));
+            dragon.exahalarFuego(monstros.get(1));
+            dragon.exahalarFuego(monstros.get(2));
+            
+            magoDAO.update(magos.get(0));
+            monstroDAO.update(monstros.get(0));
+            monstroDAO.update(monstros.get(1));
+            monstroDAO.update(monstros.get(2));
+            dragonDAO.update(dragon);
+            
+            magos.forEach(m -> System.out.println(m));
+            monstros.forEach(System.out::println);
+            System.out.println(dragon);
+        }
 
 
     }

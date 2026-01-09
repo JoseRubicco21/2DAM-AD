@@ -2,10 +2,10 @@ package com.bosque.controlador;
 
 import java.util.List;
 
-import org.hibernate.Session;
-
 import com.bosque.connection.DBConnection;
 import com.bosque.modelos.Bosque;
+
+import jakarta.persistence.EntityManager;
 
 public class BosqueDAO implements DAO<Bosque> {
 
@@ -13,7 +13,7 @@ public class BosqueDAO implements DAO<Bosque> {
     @Override
     public Bosque getById(int id) {
        DBConnection dbConnection = DBConnection.getInstance();
-       try(Session session = dbConnection.getFactory().openSession()){
+       try(EntityManager session = dbConnection.getFactory().createEntityManager()){
            return session.find(Bosque.class, id);
        } catch (Exception e) {
            System.out.println("Error al obtener el bosque con id " + id + ": " + e.getMessage());
@@ -24,8 +24,8 @@ public class BosqueDAO implements DAO<Bosque> {
     @Override
     public void save(Bosque entity) {
         DBConnection dbConnection = DBConnection.getInstance();
-        try(Session session = dbConnection.getFactory().openSession()){
-            session.beginTransaction();
+        try(EntityManager session = dbConnection.getFactory().createEntityManager()){
+            session.getTransaction().begin();
             session.persist(entity);    
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -36,8 +36,8 @@ public class BosqueDAO implements DAO<Bosque> {
     @Override
     public void update(Bosque entity) {
         DBConnection dbConnection = DBConnection.getInstance();
-        try(Session session = dbConnection.getFactory().openSession()){
-            session.beginTransaction();
+        try(EntityManager session = dbConnection.getFactory().createEntityManager()){
+            session.getTransaction().begin();
             session.merge(entity);
             session.getTransaction().commit();
         } catch (Exception e) {
@@ -48,10 +48,10 @@ public class BosqueDAO implements DAO<Bosque> {
     @Override
     public void delete(int id) {
         DBConnection dbConnection = DBConnection.getInstance();
-        try(Session session = dbConnection.getFactory().openSession()){
+        try(EntityManager session = dbConnection.getFactory().createEntityManager()){
             Bosque bosque = session.find(Bosque.class, id);
             if(bosque != null){
-                session.beginTransaction();
+                session.getTransaction().begin();
                 session.remove(bosque);
                 session.getTransaction().commit();
             } else {
@@ -65,7 +65,7 @@ public class BosqueDAO implements DAO<Bosque> {
     @Override
     public List<Bosque> getAll() {
         DBConnection  dbConnection = DBConnection.getInstance();
-        try(var session = dbConnection.getFactory().openSession()){
+        try(EntityManager session = dbConnection.getFactory().createEntityManager()){
             return session.createQuery("SELECT b FROM bosques b", Bosque.class).getResultList();
         } catch (Exception e) {
             System.out.println("Error al obtener los bosques: " + e.getMessage());

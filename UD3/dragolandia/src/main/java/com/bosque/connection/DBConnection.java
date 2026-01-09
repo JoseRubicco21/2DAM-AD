@@ -1,18 +1,14 @@
 package com.bosque.connection;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
-
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 
 
 public class DBConnection {
     
     private static DBConnection instance = null;
-    private SessionFactory factory;
+    //private SessionFactory factory;
+    private EntityManagerFactory factory;
     
     public static DBConnection getInstance() {
         if (instance == null) {
@@ -22,39 +18,12 @@ public class DBConnection {
     }
 
     private DBConnection() {
-        this.factory = new Configuration().configure().buildSessionFactory();
-        
+        //this.factory = new Configuration().configure().buildSessionFactory();
+        this.factory = Persistence.createEntityManagerFactory("dragolandiaServizo");
     }
 
-    public SessionFactory getFactory() {
+    public EntityManagerFactory getFactory() {
         return this.factory;
-    }
-
-    public <R> R execute(Function<Session, R> operation){
-        Transaction transaction = null;
-        try(Session session = this.factory.openSession()){
-            transaction = session.beginTransaction();
-            R result = operation.apply(session);
-            transaction.commit();
-            return result;
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            throw e;
-        }
-    }
-
-    public void executeTx(Consumer<Session> operation) {
-        Transaction transaction = null;
-        try (Session session = this.factory.openSession()) {
-            transaction = session.beginTransaction();
-            operation.accept(session);
-            transaction.commit();
-        } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
-            throw e;
-        }
     }
     
 }
